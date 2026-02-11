@@ -1733,14 +1733,17 @@
         }
 
         // ---- Firebase Auth (Google SSO) + Firestore ----
-        // Firebase config - replace with your own values from Firebase Console
+        // Config values are injected at deploy time from GitHub Secrets.
+        // In source code these stay as __PLACEHOLDER__ values (non-functional).
+        // The CI/CD pipeline replaces them with real values during deployment.
+        // See HOSTING-GUIDE.md for setup instructions.
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "__FIREBASE_API_KEY__",
+            authDomain: "__FIREBASE_AUTH_DOMAIN__",
+            projectId: "__FIREBASE_PROJECT_ID__",
+            storageBucket: "__FIREBASE_STORAGE_BUCKET__",
+            messagingSenderId: "__FIREBASE_MESSAGING_SENDER_ID__",
+            appId: "__FIREBASE_APP_ID__"
         };
 
         function initFirebase() {
@@ -2878,14 +2881,13 @@
         }
     </script>
 
-    <!-- Firebase SDK (optional - only needed for Google SSO + cloud playlists) -->
-    <!-- To enable: replace the config in firebaseConfig above, then uncomment these scripts -->
-    <!--
+    <!-- Firebase SDK - loads only when config has been injected by CI/CD -->
+    <!-- __FIREBASE_SCRIPTS_START__
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script>initFirebase();</script>
-    -->
+    __FIREBASE_SCRIPTS_END__ -->
 
 </body>
 </html>
