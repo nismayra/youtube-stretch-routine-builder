@@ -107,33 +107,63 @@ service cloud.firestore {
 }
 ```
 
-### Step 7: Update Your App
+### Step 7: Add Firebase Config to GitHub Secrets (NEVER commit to code)
 
-In `stretch-routine-builder.html`, find the `firebaseConfig` object and replace with your values:
+The source code contains `__PLACEHOLDER__` values. The CI/CD pipeline replaces
+them with real values from GitHub Secrets at deploy time. Your Firebase config
+**never appears in the repository**.
 
-```javascript
-const firebaseConfig = {
-    apiKey: "AIzaSy...",
-    authDomain: "your-project.firebaseapp.com",
-    projectId: "your-project-id",
-    storageBucket: "your-project.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abc123"
-};
-```
+1. Go to your GitHub repo > **Settings** > **Secrets and variables** > **Actions**
+2. Add these **Repository secrets** (one at a time):
 
-Then uncomment the Firebase SDK scripts at the bottom of the HTML file:
+| Secret Name | Example Value |
+|---|---|
+| `FIREBASE_API_KEY` | `AIzaSyB1x...` |
+| `FIREBASE_AUTH_DOMAIN` | `my-project.firebaseapp.com` |
+| `FIREBASE_PROJECT_ID` | `my-project-id` |
+| `FIREBASE_STORAGE_BUCKET` | `my-project.appspot.com` |
+| `FIREBASE_MESSAGING_SENDER_ID` | `123456789` |
+| `FIREBASE_APP_ID` | `1:123456789:web:abc123def` |
 
-```html
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script>initFirebase();</script>
-```
+3. Then go to **Settings** > **Secrets and variables** > **Actions** > **Variables** tab
+4. Add a **Repository variable**:
+
+| Variable Name | Value |
+|---|---|
+| `FIREBASE_ENABLED` | `true` |
 
 ### Step 8: Deploy
 
-Push to GitHub. The CI/CD pipeline auto-deploys.
+Push to `main`. GitHub Actions will:
+1. Checkout the code (with `__PLACEHOLDER__` values)
+2. Replace placeholders with real secrets from GitHub Secrets
+3. Uncomment the Firebase SDK script tags
+4. Deploy to GitHub Pages
+
+The deployed site has real Firebase config. The source code stays clean.
+
+### Step 9: Add Firebase App Check (Recommended)
+
+App Check prevents unauthorized apps from using your Firebase backend, even if
+someone reads your API key from the deployed site's source.
+
+1. In Firebase Console > **App Check** > **Register** your web app
+2. Choose **reCAPTCHA v3** (free, invisible to users)
+3. Get the reCAPTCHA site key
+4. Add `FIREBASE_APPCHECK_KEY` as a GitHub Secret
+5. The `initFirebase()` function will auto-activate App Check when the key is present
+
+### How the Security Layers Work
+
+```
+Layer 1: Source Code        → __PLACEHOLDER__ values (non-functional)
+Layer 2: GitHub Secrets     → Real config injected only during CI/CD deploy
+Layer 3: Authorized Domains → Firebase only accepts requests from your domain
+Layer 4: Firestore Rules    → Users can only read/write their own data
+Layer 5: App Check          → Blocks requests from unauthorized apps
+```
+
+Even if someone reads the API key from the deployed HTML, layers 3-5 protect you.
 
 ---
 
@@ -143,15 +173,30 @@ The included GitHub Actions workflow (`.github/workflows/deploy.yml`) provides:
 
 - **Automatic deployment** on every push to `main`
 - **Manual deployment** via "Run workflow" button in GitHub Actions tab
-- **Zero configuration** needed - just enable GitHub Pages
+- **Firebase config injection** from GitHub Secrets (never in source code)
+- **Conditional Firebase** - skips injection if `FIREBASE_ENABLED` is not `true`
 
 ### How It Works
 
 ```
-Push to main → GitHub Actions triggered → Static files uploaded → Live on GitHub Pages
+Push to main
+    │
+    ▼
+GitHub Actions triggered
+    │
+    ├── Checkout source (placeholders in code)
+    │
+    ├── If FIREBASE_ENABLED == 'true':
+    │     ├── sed replaces __FIREBASE_*__ with GitHub Secrets
+    │     └── Uncomments Firebase SDK <script> tags
+    │
+    ├── Upload artifact to Pages
+    │
+    └── Deploy → Live on GitHub Pages (with real config)
 ```
 
-No build step is needed since this is a static HTML app.
+**Without Firebase secrets:** Site works fine with local-only playlists (no SSO).
+**With Firebase secrets:** Google SSO + cloud playlists become active.
 
 ---
 
