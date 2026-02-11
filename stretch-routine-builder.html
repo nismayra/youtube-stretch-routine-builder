@@ -174,7 +174,282 @@
             background: linear-gradient(135deg, #ef4444, #dc2626);
         }
 
-        /* Sidebar */
+        /* Playlist Sidebar (Left) */
+        .playlist-sidebar-toggle {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(236, 72, 153, 0.6);
+            border: 1px solid rgba(236, 72, 153, 0.8);
+            border-left: none;
+            color: white;
+            padding: 0.75rem 0.35rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 0.75rem;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+        }
+
+        .playlist-sidebar-toggle:hover {
+            background: rgba(236, 72, 153, 0.9);
+            padding-left: 0.5rem;
+        }
+
+        .playlist-sidebar {
+            position: fixed;
+            left: -360px;
+            top: 0;
+            width: 340px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
+            border-right: 1px solid rgba(236, 72, 153, 0.3);
+            z-index: 1003;
+            overflow-y: auto;
+            padding: 1rem;
+            transition: left 0.3s ease;
+        }
+
+        .playlist-sidebar.open {
+            left: 0;
+        }
+
+        .pl-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pl-header-title {
+            color: #fbcfe8;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pl-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .pl-close:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        .pl-section-label {
+            color: #f9a8d4;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .pl-entry {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            margin-bottom: 0.4rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pl-entry:hover {
+            background: rgba(236, 72, 153, 0.15);
+            border-color: rgba(236, 72, 153, 0.4);
+        }
+
+        .pl-entry.active {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+            border-color: rgba(236, 72, 153, 0.6);
+        }
+
+        .pl-entry-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pl-entry-name {
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pl-entry-meta {
+            color: #c4b5fd;
+            font-size: 0.6rem;
+            margin-top: 0.15rem;
+        }
+
+        .pl-entry-actions {
+            display: flex;
+            gap: 0.25rem;
+            flex-shrink: 0;
+            margin-left: 0.5rem;
+        }
+
+        .pl-entry-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 0.2rem;
+            font-size: 0.7rem;
+            border-radius: 0.2rem;
+            transition: all 0.2s;
+        }
+
+        .pl-entry-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .pl-entry-btn.delete:hover {
+            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .pl-auth-bar {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.6rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pl-auth-bar .avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+
+        .pl-auth-bar .user-email {
+            color: #e2e8f0;
+            font-size: 0.7rem;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .pl-auth-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e2e8f0;
+            padding: 0.35rem 0.6rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            font-size: 0.65rem;
+            transition: all 0.2s;
+        }
+
+        .pl-auth-btn:hover {
+            background: rgba(168, 85, 247, 0.2);
+        }
+
+        .pl-google-btn {
+            background: white;
+            color: #333;
+            border: 1px solid #dadce0;
+            padding: 0.4rem 0.75rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .pl-google-btn:hover {
+            background: #f8f9fa;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: linear-gradient(180deg, #1e1b4b, #0f172a);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal h3 {
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.4rem;
+            color: white;
+            font-size: 0.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: rgba(168, 85, 247, 0.6);
+        }
+
+        .modal-btns {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        /* Settings Sidebar (Right) */
         .sidebar-toggle {
             position: fixed;
             right: 0;
@@ -922,6 +1197,10 @@
                 width: 280px;
                 right: -300px;
             }
+            .playlist-sidebar {
+                width: 280px;
+                left: -300px;
+            }
         }
     </style>
 </head>
@@ -943,7 +1222,7 @@
         <!-- Configuration Tab -->
         <div id="config-tab" class="tab-content">
             <div class="preset-configs">
-                <h3 class="preset-title">📚 Quick Load Presets</h3>
+                <h3 class="preset-title">Playlists</h3>
                 <div class="preset-list" id="presetList"></div>
             </div>
 
@@ -1061,7 +1340,63 @@
                 </div>
             </div>
 
-            <!-- Sidebar Toggle -->
+            <!-- Playlist Sidebar Toggle (Left) -->
+            <button class="playlist-sidebar-toggle" onclick="togglePlaylistSidebar()">Playlists</button>
+
+            <!-- Playlist Sidebar Overlay -->
+            <div class="sidebar-overlay" id="plSidebarOverlay" onclick="togglePlaylistSidebar()"></div>
+
+            <!-- Playlist Sidebar -->
+            <div class="playlist-sidebar" id="playlistSidebar">
+                <div class="pl-header">
+                    <span class="pl-header-title">Playlists</span>
+                    <button class="pl-close" onclick="togglePlaylistSidebar()">&times;</button>
+                </div>
+
+                <!-- Auth Bar -->
+                <div class="pl-auth-bar" id="authBar">
+                    <div id="authContent">
+                        <button class="pl-google-btn" onclick="signInWithGoogle()">
+                            <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                            Sign in with Google
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Built-in Playlists -->
+                <div class="pl-section-label">Built-in Playlists</div>
+                <div id="builtinPlaylistList"></div>
+
+                <!-- User Playlists (localStorage) -->
+                <div class="pl-section-label">My Playlists (Local)</div>
+                <div id="userPlaylistList"></div>
+
+                <!-- Private Playlists (requires sign-in) -->
+                <div class="pl-section-label" id="privatePlaylistLabel" style="display:none;">My Playlists (Cloud)</div>
+                <div id="privatePlaylistList"></div>
+            </div>
+
+            <!-- Save Playlist Modal -->
+            <div class="modal-overlay" id="saveModal">
+                <div class="modal">
+                    <h3>Save as Playlist</h3>
+                    <input type="text" class="modal-input" id="savePlaylistName" placeholder="Playlist name (e.g. Morning Stretch)">
+                    <input type="text" class="modal-input" id="savePlaylistDesc" placeholder="Short description (optional)">
+                    <div style="margin-bottom: 0.75rem;">
+                        <label style="color: #c4b5fd; font-size: 0.7rem; display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                            <input type="checkbox" id="saveToCloud" style="display:none;" disabled>
+                            <span id="cloudCheckbox" style="display:inline-block; width:14px; height:14px; border:1px solid rgba(255,255,255,0.3); border-radius:3px; background:rgba(0,0,0,0.3); opacity:0.4;"></span>
+                            Save to cloud (sign in required)
+                        </label>
+                    </div>
+                    <div class="modal-btns">
+                        <button class="btn" style="background: rgba(255,255,255,0.1);" onclick="closeSaveModal()">Cancel</button>
+                        <button class="btn" onclick="confirmSavePlaylist()">Save</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Toggle (Right) -->
             <button class="sidebar-toggle" onclick="toggleSidebar()">Settings</button>
 
             <!-- Sidebar Overlay -->
@@ -1232,6 +1567,350 @@
         ];
 
         let currentPreset = null;
+
+        // Playlist management
+        let userPlaylists = JSON.parse(localStorage.getItem('stretchPlaylists') || '[]');
+        let currentUser = null;
+        let firebaseReady = false;
+
+        function getBuiltinPlaylists() {
+            return presetConfigs.map((p, i) => ({
+                id: 'builtin-' + i,
+                name: p.name,
+                description: p.description,
+                info: p.info,
+                config: p.config,
+                type: 'builtin'
+            }));
+        }
+
+        function saveUserPlaylistsToStorage() {
+            localStorage.setItem('stretchPlaylists', JSON.stringify(userPlaylists));
+        }
+
+        function openSaveModal() {
+            document.getElementById('saveModal').classList.add('open');
+            document.getElementById('savePlaylistName').value = '';
+            document.getElementById('savePlaylistDesc').value = '';
+            document.getElementById('savePlaylistName').focus();
+            // Enable cloud checkbox only if signed in
+            const cb = document.getElementById('saveToCloud');
+            const vis = document.getElementById('cloudCheckbox');
+            if (currentUser) {
+                cb.disabled = false;
+                vis.style.opacity = '1';
+            } else {
+                cb.disabled = true;
+                cb.checked = false;
+                vis.style.opacity = '0.4';
+            }
+        }
+
+        function closeSaveModal() {
+            document.getElementById('saveModal').classList.remove('open');
+        }
+
+        function confirmSavePlaylist() {
+            const name = document.getElementById('savePlaylistName').value.trim();
+            if (!name) {
+                document.getElementById('savePlaylistName').style.borderColor = '#ef4444';
+                return;
+            }
+            const desc = document.getElementById('savePlaylistDesc').value.trim();
+            const toCloud = document.getElementById('saveToCloud').checked && currentUser;
+
+            const playlist = {
+                id: 'user-' + Date.now(),
+                name: name,
+                description: desc || `${config.stretches.length} stretches`,
+                config: JSON.parse(JSON.stringify(config)),
+                createdAt: new Date().toISOString(),
+                type: toCloud ? 'cloud' : 'local'
+            };
+
+            if (toCloud && firebaseReady) {
+                savePlaylistToFirestore(playlist);
+            } else {
+                userPlaylists.push(playlist);
+                saveUserPlaylistsToStorage();
+            }
+
+            closeSaveModal();
+            renderAllPlaylists();
+            renderPresetList();
+        }
+
+        function deleteUserPlaylist(id) {
+            if (!confirm('Delete this playlist?')) return;
+            userPlaylists = userPlaylists.filter(p => p.id !== id);
+            saveUserPlaylistsToStorage();
+            renderAllPlaylists();
+            renderPresetList();
+        }
+
+        function loadPlaylistById(id) {
+            // Check built-in
+            const builtinIdx = presetConfigs.findIndex((_, i) => 'builtin-' + i === id);
+            if (builtinIdx >= 0) {
+                loadPreset(builtinIdx);
+                return;
+            }
+            // Check user playlists
+            const userPl = userPlaylists.find(p => p.id === id);
+            if (userPl) {
+                config = JSON.parse(JSON.stringify(userPl.config));
+                currentPreset = null;
+                document.getElementById('layoutSelect').value = config.layout || '5x2';
+                renderGrid();
+                initializePlayers();
+                updateConfigPreview();
+                renderPlaylist();
+                renderPresetList();
+                renderAllPlaylists();
+                document.getElementById('mainTitle').textContent = `Loaded: ${userPl.name}`;
+                document.getElementById('mainProgress').textContent = userPl.description;
+                setTimeout(() => {
+                    if (!sequentialMode.active) {
+                        document.getElementById('mainTitle').textContent = 'Sequential Player';
+                        document.getElementById('mainProgress').textContent = 'Press Start to begin sequential playback';
+                    }
+                }, 3000);
+            }
+        }
+
+        function renderAllPlaylists() {
+            // Built-in
+            const builtinContainer = document.getElementById('builtinPlaylistList');
+            if (builtinContainer) {
+                builtinContainer.innerHTML = '';
+                presetConfigs.forEach((preset, index) => {
+                    const el = document.createElement('div');
+                    el.className = 'pl-entry' + (currentPreset === index ? ' active' : '');
+                    el.innerHTML = `
+                        <div class="pl-entry-info" onclick="loadPlaylistById('builtin-${index}')">
+                            <div class="pl-entry-name">${preset.name}</div>
+                            <div class="pl-entry-meta">${preset.description}</div>
+                        </div>
+                    `;
+                    builtinContainer.appendChild(el);
+                });
+            }
+
+            // User local playlists
+            const userContainer = document.getElementById('userPlaylistList');
+            if (userContainer) {
+                userContainer.innerHTML = '';
+                const localPls = userPlaylists.filter(p => p.type !== 'cloud');
+                if (localPls.length === 0) {
+                    userContainer.innerHTML = '<div style="color:#64748b; font-size:0.65rem; padding:0.4rem;">No saved playlists yet. Use Save Config to create one.</div>';
+                } else {
+                    localPls.forEach(pl => {
+                        const el = document.createElement('div');
+                        el.className = 'pl-entry';
+                        el.innerHTML = `
+                            <div class="pl-entry-info" onclick="loadPlaylistById('${pl.id}')">
+                                <div class="pl-entry-name">${pl.name}</div>
+                                <div class="pl-entry-meta">${pl.description}</div>
+                            </div>
+                            <div class="pl-entry-actions">
+                                <button class="pl-entry-btn delete" onclick="event.stopPropagation();deleteUserPlaylist('${pl.id}')" title="Delete">&#x2715;</button>
+                            </div>
+                        `;
+                        userContainer.appendChild(el);
+                    });
+                }
+            }
+        }
+
+        function togglePlaylistSidebar() {
+            const sidebar = document.getElementById('playlistSidebar');
+            const overlay = document.getElementById('plSidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+            if (sidebar.classList.contains('open')) {
+                renderAllPlaylists();
+            }
+        }
+
+        // ---- Firebase Auth (Google SSO) + Firestore ----
+        // Firebase config - replace with your own values from Firebase Console
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        function initFirebase() {
+            // Check if Firebase scripts are loaded
+            if (typeof firebase === 'undefined') return;
+            try {
+                firebase.initializeApp(firebaseConfig);
+                firebaseReady = true;
+
+                firebase.auth().onAuthStateChanged(user => {
+                    currentUser = user;
+                    renderAuthBar();
+                    if (user) {
+                        loadCloudPlaylists();
+                    }
+                });
+            } catch (e) {
+                console.log('Firebase not configured yet:', e.message);
+            }
+        }
+
+        function signInWithGoogle() {
+            if (!firebaseReady) {
+                alert('Firebase is not configured yet. See the setup guide in README to enable Google Sign-In and cloud playlists.');
+                return;
+            }
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).catch(err => {
+                console.error('Sign-in error:', err);
+                alert('Sign-in failed: ' + err.message);
+            });
+        }
+
+        function signOut() {
+            if (firebaseReady) {
+                firebase.auth().signOut();
+            }
+            currentUser = null;
+            renderAuthBar();
+            document.getElementById('privatePlaylistLabel').style.display = 'none';
+            document.getElementById('privatePlaylistList').innerHTML = '';
+        }
+
+        function renderAuthBar() {
+            const bar = document.getElementById('authContent');
+            if (!bar) return;
+            if (currentUser) {
+                bar.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:0.5rem; width:100%;">
+                        ${currentUser.photoURL ? `<img class="avatar" src="${currentUser.photoURL}" alt="">` : ''}
+                        <span class="user-email">${currentUser.email || currentUser.displayName}</span>
+                        <button class="pl-auth-btn" onclick="signOut()">Sign out</button>
+                    </div>
+                `;
+                // Enable cloud save checkbox
+                const cb = document.getElementById('saveToCloud');
+                const vis = document.getElementById('cloudCheckbox');
+                if (cb) { cb.disabled = false; }
+                if (vis) { vis.style.opacity = '1'; }
+            } else {
+                bar.innerHTML = `
+                    <button class="pl-google-btn" onclick="signInWithGoogle()">
+                        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                        Sign in with Google
+                    </button>
+                `;
+            }
+        }
+
+        function savePlaylistToFirestore(playlist) {
+            if (!firebaseReady || !currentUser) return;
+            const db = firebase.firestore();
+            const docData = {
+                ...playlist,
+                userId: currentUser.uid,
+                email: currentUser.email,
+                config: JSON.stringify(playlist.config)
+            };
+            db.collection('playlists').add(docData).then(() => {
+                loadCloudPlaylists();
+            }).catch(err => {
+                console.error('Firestore save error:', err);
+                alert('Failed to save to cloud. Saving locally instead.');
+                playlist.type = 'local';
+                userPlaylists.push(playlist);
+                saveUserPlaylistsToStorage();
+                renderAllPlaylists();
+            });
+        }
+
+        function loadCloudPlaylists() {
+            if (!firebaseReady || !currentUser) return;
+            const db = firebase.firestore();
+            document.getElementById('privatePlaylistLabel').style.display = 'block';
+
+            db.collection('playlists')
+                .where('userId', '==', currentUser.uid)
+                .orderBy('createdAt', 'desc')
+                .get()
+                .then(snapshot => {
+                    const container = document.getElementById('privatePlaylistList');
+                    container.innerHTML = '';
+                    if (snapshot.empty) {
+                        container.innerHTML = '<div style="color:#64748b; font-size:0.65rem; padding:0.4rem;">No cloud playlists. Save with "Save to cloud" checked.</div>';
+                        return;
+                    }
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const el = document.createElement('div');
+                        el.className = 'pl-entry';
+                        el.innerHTML = `
+                            <div class="pl-entry-info" onclick="loadCloudPlaylist('${doc.id}')">
+                                <div class="pl-entry-name">${data.name}</div>
+                                <div class="pl-entry-meta">${data.description || ''}</div>
+                            </div>
+                            <div class="pl-entry-actions">
+                                <button class="pl-entry-btn delete" onclick="event.stopPropagation();deleteCloudPlaylist('${doc.id}')" title="Delete">&#x2715;</button>
+                            </div>
+                        `;
+                        container.appendChild(el);
+                    });
+                })
+                .catch(err => {
+                    console.error('Firestore load error:', err);
+                });
+        }
+
+        function loadCloudPlaylist(docId) {
+            if (!firebaseReady) return;
+            const db = firebase.firestore();
+            db.collection('playlists').doc(docId).get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    config = JSON.parse(data.config);
+                    currentPreset = null;
+                    document.getElementById('layoutSelect').value = config.layout || '5x2';
+                    renderGrid();
+                    initializePlayers();
+                    updateConfigPreview();
+                    renderPlaylist();
+                    renderPresetList();
+                    document.getElementById('mainTitle').textContent = `Loaded: ${data.name}`;
+                }
+            });
+        }
+
+        function deleteCloudPlaylist(docId) {
+            if (!firebaseReady || !confirm('Delete this cloud playlist?')) return;
+            const db = firebase.firestore();
+            db.collection('playlists').doc(docId).delete().then(() => {
+                loadCloudPlaylists();
+            });
+        }
+
+        // Cloud save checkbox toggle
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'cloudCheckbox' || (e.target.closest && e.target.closest('label')?.querySelector('#cloudCheckbox'))) {
+                const cb = document.getElementById('saveToCloud');
+                const vis = document.getElementById('cloudCheckbox');
+                if (!cb.disabled) {
+                    cb.checked = !cb.checked;
+                    vis.style.background = cb.checked ? 'rgba(168, 85, 247, 0.6)' : 'rgba(0,0,0,0.3)';
+                    vis.innerHTML = cb.checked ? '&#10003;' : '';
+                    vis.style.color = 'white';
+                    vis.style.fontSize = '0.6rem';
+                    vis.style.textAlign = 'center';
+                    vis.style.lineHeight = '14px';
+                }
+            }
+        });
 
         let players = [];
         let playerStates = [];
@@ -1529,21 +2208,38 @@
         function renderPresetList() {
             const container = document.getElementById('presetList');
             container.innerHTML = '';
-            
+
+            // Built-in playlists
             presetConfigs.forEach((preset, index) => {
                 const item = document.createElement('div');
                 item.className = 'preset-item';
                 if (currentPreset === index) {
                     item.classList.add('active');
                 }
-                
                 item.innerHTML = `
                     <div class="preset-item-name">${preset.name}</div>
                     <div class="preset-item-desc">${preset.description}</div>
                     <div class="preset-item-info">${preset.info}</div>
                 `;
-                
                 item.onclick = () => loadPreset(index);
+                container.appendChild(item);
+            });
+
+            // User playlists
+            userPlaylists.forEach(pl => {
+                const item = document.createElement('div');
+                item.className = 'preset-item';
+                item.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:start;">
+                        <div>
+                            <div class="preset-item-name">${pl.name}</div>
+                            <div class="preset-item-desc">${pl.description}</div>
+                            <div class="preset-item-info">${pl.type === 'cloud' ? 'Cloud' : 'Local'} | ${new Date(pl.createdAt).toLocaleDateString()}</div>
+                        </div>
+                        <button class="grid-mgmt-btn danger" onclick="event.stopPropagation();deleteUserPlaylist('${pl.id}')" style="flex-shrink:0;">Delete</button>
+                    </div>
+                `;
+                item.onclick = () => loadPlaylistById(pl.id);
                 container.appendChild(item);
             });
         }
@@ -1723,6 +2419,7 @@
             updateConfigPreview();
             renderPlaylist();
             renderPresetList();
+            renderAllPlaylists();
         }
 
         function initializePlayers() {
@@ -2112,7 +2809,7 @@
 
         function saveCurrentConfig() {
             updateConfigPreview();
-            alert('Configuration saved! Switch to Configuration tab to download.');
+            openSaveModal();
         }
 
         function updateConfigPreview() {
@@ -2121,12 +2818,14 @@
         }
 
         function downloadConfig() {
+            const name = prompt('Playlist name for the downloaded file:', 'stretch-routine');
+            if (name === null) return;
             const dataStr = JSON.stringify(config, null, 2);
             const dataBlob = new Blob([dataStr], { type: 'application/json' });
             const url = URL.createObjectURL(dataBlob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'stretch-routine-config.json';
+            link.download = (name.trim() || 'stretch-routine') + '-config.json';
             link.click();
             URL.revokeObjectURL(url);
         }
@@ -2137,15 +2836,33 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     try {
-                        config = JSON.parse(e.target.result);
-                        currentPreset = null; // Clear preset selection when loading custom file
+                        const loadedConfig = JSON.parse(e.target.result);
+                        const name = prompt('Name this playlist:', file.name.replace(/\.json$/i, '').replace(/-config$/i, ''));
+                        if (name === null) return;
+
+                        config = loadedConfig;
+                        currentPreset = null;
                         document.getElementById('layoutSelect').value = config.layout || '5x2';
                         renderGrid();
                         initializePlayers();
                         updateConfigPreview();
                         renderPlaylist();
                         renderPresetList();
-                        alert('Configuration loaded successfully!');
+
+                        // Add to user playlists
+                        if (name.trim()) {
+                            const playlist = {
+                                id: 'user-' + Date.now(),
+                                name: name.trim(),
+                                description: `${config.stretches.length} stretches - Imported from file`,
+                                config: JSON.parse(JSON.stringify(config)),
+                                createdAt: new Date().toISOString(),
+                                type: 'local'
+                            };
+                            userPlaylists.push(playlist);
+                            saveUserPlaylistsToStorage();
+                            renderAllPlaylists();
+                        }
                     } catch (error) {
                         alert('Error loading configuration: ' + error.message);
                     }
@@ -2156,9 +2873,19 @@
 
         function resetConfig() {
             if (confirm('Are you sure you want to reset to default configuration?')) {
-                loadPreset(0); // Load first preset (Lower Back Stretches)
+                loadPreset(0);
             }
         }
     </script>
+
+    <!-- Firebase SDK (optional - only needed for Google SSO + cloud playlists) -->
+    <!-- To enable: replace the config in firebaseConfig above, then uncomment these scripts -->
+    <!--
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>initFirebase();</script>
+    -->
+
 </body>
 </html>
