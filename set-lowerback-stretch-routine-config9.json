@@ -1,0 +1,96 @@
+{
+  "layout": "5x2",
+  "videoId": "0wAw1-1MHa4",
+  "stretches": [
+    {
+      "name": "Double Knee Rotation",
+      "videoId": "0wAw1-1MHa4",
+      "start": 138,
+      "end": 142,
+      "repeat": 3,
+      "loop": true,
+      "description": "Lower back stretch - Gently rotates both knees side to side to release tension in the lower back and hips."
+    },
+    {
+      "name": "Single Knee Rotation",
+      "videoId": "0wAw1-1MHa4",
+      "start": 173,
+      "end": 177,
+      "repeat": 3,
+      "loop": true,
+      "description": "Hip mobility - Rotates one knee at a time in circles to improve hip joint flexibility and range of motion."
+    },
+    {
+      "name": "Single Knee to Chest",
+      "videoId": "0wAw1-1MHa4",
+      "start": 219,
+      "end": 222,
+      "repeat": 3,
+      "loop": true,
+      "description": "Lower back relief - Pulls one knee toward chest to stretch the lower back and glutes."
+    },
+    {
+      "name": "Double Knee to Chest",
+      "videoId": "0wAw1-1MHa4",
+      "start": 245,
+      "end": 249,
+      "repeat": 3,
+      "loop": true,
+      "description": "Spine decompression - Hugs both knees to chest to release tension throughout the entire spine."
+    },
+    {
+      "name": "Piriformis Stretch",
+      "videoId": "0wAw1-1MHa4",
+      "start": 304,
+      "end": 309,
+      "repeat": 3,
+      "loop": true,
+      "description": "Hip and glute stretch - Targets the piriformis muscle deep in the hip to relieve sciatica and hip tightness."
+    },
+    {
+      "name": "Hamstring Stretch",
+      "videoId": "0wAw1-1MHa4",
+      "start": 368,
+      "end": 373,
+      "repeat": 3,
+      "loop": true,
+      "description": "Leg flexibility - Stretches the hamstrings to improve flexibility and reduce lower back strain."
+    },
+    {
+      "name": "Lower Back Extension",
+      "videoId": "0wAw1-1MHa4",
+      "start": 442,
+      "end": 446,
+      "repeat": 3,
+      "loop": true,
+      "description": "Spinal extension - Gently arches the back to counteract forward bending and improve posture."
+    },
+    {
+      "name": "Child's Pose",
+      "videoId": "0wAw1-1MHa4",
+      "start": 492,
+      "end": 498,
+      "repeat": 3,
+      "loop": true,
+      "description": "Full body relaxation - Rests in a kneeling position with arms extended to stretch the back and shoulders."
+    },
+    {
+      "name": "Cat/Cow Stretch",
+      "videoId": "0wAw1-1MHa4",
+      "start": 568,
+      "end": 573,
+      "repeat": 3,
+      "loop": true,
+      "description": "Spine mobility - Alternates between arching and rounding the spine to increase flexibility and circulation."
+    },
+    {
+      "name": "Hip Flexor Stretch",
+      "videoId": "0wAw1-1MHa4",
+      "start": 607,
+      "end": 613,
+      "repeat": 3,
+      "loop": true,
+      "description": "Hip opener - Stretches the front of the hips to counteract sitting and improve hip extension."
+    }
+  ]
+}

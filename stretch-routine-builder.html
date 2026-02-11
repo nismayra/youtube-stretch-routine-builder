@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stretch Routine Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(to bottom right, #0f172a, #581c87, #0f172a);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #d8b4fe, #fbcfe8, #d8b4fe);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #e9d5ff;
+            font-size: 1rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e9d5ff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab:hover {
+            background: rgba(168, 85, 247, 0.3);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            border-color: transparent;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .control-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .control-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .control-label {
+            color: #d8b4fe;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            font-weight: 600;
+        }
+
+        .control-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        .control-select {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .btn.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        /* Main Video Player */
+        .main-player {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .main-player.position-top {
+            order: -1;
+        }
+
+        .main-player.position-left {
+            position: fixed;
+            left: 1rem;
+            top: 1rem;
+            width: 400px;
+            z-index: 1000;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .main-player.position-right {
+            position: fixed;
+            right: 1rem;
+            top: 1rem;
+            width: 400px;
+            z-index: 1000;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .main-player.position-bottom {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 600px;
+            z-index: 1000;
+        }
+
+        .main-player.hidden {
+            display: none;
+        }
+
+        .main-video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 1rem auto;
+            padding-bottom: 45%;
+            background: #000;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .main-player.position-left .main-video-wrapper,
+        .main-player.position-right .main-video-wrapper {
+            max-width: 100%;
+            padding-bottom: 56.25%;
+        }
+
+        .main-player.position-bottom .main-video-wrapper {
+            padding-bottom: 40%;
+        }
+
+        .sequential-container {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .player-section {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .playlist-panel {
+            width: 350px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 1rem;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .playlist-title {
+            color: #d8b4fe;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .playlist-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .playlist-item:hover {
+            background: rgba(168, 85, 247, 0.2);
+            border-color: rgba(168, 85, 247, 0.5);
+        }
+
+        .playlist-item.current {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3));
+            border-color: rgba(168, 85, 247, 0.8);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+
+        .playlist-item.completed {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+            opacity: 0.7;
+        }
+
+        .playlist-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.25rem;
+        }
+
+        .playlist-item-number {
+            color: #d8b4fe;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .playlist-item-name {
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .playlist-item-info {
+            color: #e9d5ff;
+            font-size: 0.7rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .playlist-item-repeat {
+            background: rgba(168, 85, 247, 0.3);
+            padding: 0.125rem 0.375rem;
+            border-radius: 0.25rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .playlist-item.current .playlist-item-repeat {
+            background: rgba(236, 72, 153, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+
+        .pause-control {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .pause-label {
+            color: #d8b4fe;
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .pause-input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pause-input {
+            width: 60px;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.25rem;
+            color: white;
+            font-size: 0.875rem;
+            text-align: center;
+        }
+
+        .preset-configs {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .preset-title {
+            color: #d8b4fe;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .preset-list {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .preset-item {
+            background: rgba(168, 85, 247, 0.1);
+            border: 2px solid rgba(168, 85, 247, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .preset-item:hover {
+            background: rgba(168, 85, 247, 0.2);
+            border-color: rgba(168, 85, 247, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .preset-item.active {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3));
+            border-color: rgba(168, 85, 247, 0.8);
+        }
+
+        .preset-item-name {
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .preset-item-desc {
+            color: #e9d5ff;
+            font-size: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .preset-item-info {
+            color: #c4b5fd;
+            font-size: 0.7rem;
+        }
+
+        .grid-management-btns {
+            display: flex;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .grid-mgmt-btn {
+            background: rgba(168, 85, 247, 0.3);
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            border-radius: 0.25rem;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .grid-mgmt-btn:hover {
+            background: rgba(168, 85, 247, 0.5);
+            border-color: rgba(168, 85, 247, 0.8);
+        }
+
+        .grid-mgmt-btn.danger {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .grid-mgmt-btn.danger:hover {
+            background: rgba(239, 68, 68, 0.5);
+            border-color: rgba(239, 68, 68, 0.8);
+        }
+
+        @media (max-width: 1024px) {
+            .sequential-container {
+                flex-direction: column;
+            }
+            .playlist-panel {
+                width: 100%;
+                max-height: 400px;
+            }
+        }
+
+        .main-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .main-info {
+            text-align: center;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .main-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .main-progress {
+            font-size: 1rem;
+            color: #e9d5ff;
+        }
+
+        .main-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Stretch Grid */
+        .stretch-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stretch-grid.layout-2x5 {
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        }
+
+        .stretch-grid.layout-5x2 {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .stretch-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            padding: 1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stretch-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        }
+
+        .stretch-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
+        }
+
+        .stretch-info {
+            flex: 1;
+        }
+
+        .stretch-number {
+            color: #d8b4fe;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .stretch-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .stretch-duration {
+            color: #e9d5ff;
+            font-size: 0.7rem;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #000;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .timer-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #4ade80;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .playing-indicator {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ef4444;
+            z-index: 10;
+            animation: pulse 1.5s infinite;
+        }
+
+        .loop-badge {
+            position: absolute;
+            top: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(168, 85, 247, 0.8);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .stretch-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .sound-toggle {
+            background: rgba(168, 85, 247, 0.3);
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sound-toggle:hover {
+            background: rgba(168, 85, 247, 0.5);
+        }
+
+        .sound-toggle.unmuted {
+            background: rgba(34, 197, 94, 0.5);
+            border-color: rgba(34, 197, 94, 0.7);
+        }
+
+        .loop-toggle {
+            background: rgba(168, 85, 247, 0.3);
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.75rem;
+        }
+
+        .loop-toggle.active {
+            background: rgba(34, 197, 94, 0.5);
+            border-color: rgba(34, 197, 94, 0.7);
+        }
+
+        /* Sliders */
+        .slider-group {
+            margin-top: 0.75rem;
+        }
+
+        .slider-group.hidden {
+            display: none;
+        }
+
+        .slider-label {
+            color: #d8b4fe;
+            font-size: 0.7rem;
+            margin-bottom: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .slider {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            margin-bottom: 0.5rem;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #a855f7;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #a855f7;
+            cursor: pointer;
+            border: none;
+        }
+
+        .repeat-input {
+            width: 60px;
+            padding: 0.25rem 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.25rem;
+            color: white;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        .icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            .stretch-grid.layout-2x5,
+            .stretch-grid.layout-5x2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">Stretch Routine Builder</h1>
+            <p class="subtitle">Customizable Multi-Video Stretch Player</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('grid')">Grid View</button>
+            <button class="tab" onclick="switchTab('config')">Configuration</button>
+        </div>
+
+        <!-- Configuration Tab -->
+        <div id="config-tab" class="tab-content">
+            <div class="preset-configs">
+                <h3 class="preset-title">📚 Quick Load Presets</h3>
+                <div class="preset-list" id="presetList"></div>
+            </div>
+
+            <div class="control-panel">
+                <h3 style="color: white; margin-bottom: 1rem;">Configuration Settings</h3>
+                
+                <div class="control-row">
+                    <div class="control-group">
+                        <label class="control-label">Grid Layout</label>
+                        <select class="control-select" id="layoutSelect" onchange="changeLayout()">
+                            <option value="2x5">2 Columns x 5 Rows</option>
+                            <option value="5x2">5 Columns x 2 Rows</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <button class="btn secondary" onclick="downloadConfig()">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        Download Config JSON
+                    </button>
+                    
+                    <div class="file-upload">
+                        <button class="btn" onclick="document.getElementById('configUpload').click()">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                            </svg>
+                            Load Config JSON
+                        </button>
+                        <input type="file" id="configUpload" accept=".json" onchange="loadConfig(event)" style="display: none;">
+                    </div>
+                    
+                    <button class="btn danger" onclick="resetConfig()">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Reset to Default
+                    </button>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <label class="control-label">Current Configuration Preview</label>
+                    <textarea id="configPreview" class="control-input" rows="10" readonly style="font-family: monospace; font-size: 0.75rem;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid View Tab -->
+        <div id="grid-tab" class="tab-content active">
+            <!-- Sequential Player (embedded in grid view) -->
+            <div class="main-player position-top" id="sequentialPlayer">
+                <div class="sequential-container">
+                    <div class="player-section">
+                        <div class="main-video-wrapper">
+                            <div id="mainPlayer"></div>
+                        </div>
+                        
+                        <div class="main-info">
+                            <div class="main-title" id="mainTitle">Sequential Player</div>
+                            <div class="main-progress" id="mainProgress">Press Start to begin sequential playback</div>
+                        </div>
+                        
+                        <div class="main-controls">
+                            <button class="btn" onclick="startSequential()">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Start Sequential
+                            </button>
+                            
+                            <button class="btn danger" onclick="stopSequential()">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+                                </svg>
+                                Stop
+                            </button>
+                            
+                            <button class="btn" onclick="skipNext()">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                                </svg>
+                                Skip Next
+                            </button>
+                        </div>
+
+                        <div class="pause-control">
+                            <label class="pause-label">Pause Between Repeats (same stretch)</label>
+                            <div class="pause-input-group">
+                                <input type="number" class="pause-input" id="pauseRepeat" value="2" min="0" max="30" step="1">
+                                <span style="color: #e9d5ff; font-size: 0.75rem;">seconds between repeats</span>
+                            </div>
+                            
+                            <label class="pause-label" style="margin-top: 1rem;">Pause Between Videos (different stretches)</label>
+                            <div class="pause-input-group">
+                                <input type="number" class="pause-input" id="pauseVideo" value="3" min="0" max="30" step="1">
+                                <span style="color: #e9d5ff; font-size: 0.75rem;">seconds between videos</span>
+                            </div>
+
+                            <label class="pause-label" style="margin-top: 1rem;">Overall Sequence Repeats</label>
+                            <div class="pause-input-group">
+                                <input type="number" class="pause-input" id="overallRepeats" value="2" min="1" max="10" step="1">
+                                <span style="color: #e9d5ff; font-size: 0.75rem;">times to repeat entire routine</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="playlist-panel">
+                        <div class="playlist-title">Playlist & Progress</div>
+                        <div id="playlistItems"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-panel">
+                <div class="control-row">
+                    <button class="btn" onclick="playAllGrid()">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                        </svg>
+                        Play All (Muted)
+                    </button>
+                    
+                    <button class="btn danger" onclick="stopAllGrid()">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6"/>
+                        </svg>
+                        Stop All
+                    </button>
+                    
+                    <button class="btn" onclick="muteAllGrid()">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+                        </svg>
+                        Mute All
+                    </button>
+
+                    <button class="btn secondary" onclick="saveCurrentConfig()">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                        </svg>
+                        Save Config
+                    </button>
+
+                    <button class="btn" id="toggleSlidersBtn" onclick="toggleSliders()">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                        </svg>
+                        Hide Sliders
+                    </button>
+                </div>
+
+                <div class="control-row">
+                    <div class="control-group" style="max-width: 250px;">
+                        <label class="control-label">Sequential Player Position</label>
+                        <select class="control-select" id="playerPosition" onchange="changePlayerPosition()">
+                            <option value="top">Top (Default)</option>
+                            <option value="left">Left Sidebar</option>
+                            <option value="right">Right Sidebar</option>
+                            <option value="bottom">Bottom Bar</option>
+                            <option value="hidden">Hidden</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stretch-grid layout-2x5" id="stretchGrid"></div>
+        </div>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let config = {
+            layout: '5x2',
+            videoId: '0wAw1-1MHa4',
+            stretches: [
+                { name: 'Double Knee Rotation', videoId: '0wAw1-1MHa4', start: 138, end: 142, repeat: 3, loop: true, description: 'Lower back stretch - Gently rotates both knees side to side to release tension in the lower back and hips.' },
+                { name: 'Single Knee Rotation', videoId: '0wAw1-1MHa4', start: 173, end: 177, repeat: 3, loop: true, description: 'Hip mobility - Rotates one knee at a time in circles to improve hip joint flexibility and range of motion.' },
+                { name: 'Single Knee to Chest', videoId: '0wAw1-1MHa4', start: 219, end: 222, repeat: 3, loop: true, description: 'Lower back relief - Pulls one knee toward chest to stretch the lower back and glutes.' },
+                { name: 'Double Knee to Chest', videoId: '0wAw1-1MHa4', start: 245, end: 249, repeat: 3, loop: true, description: 'Spine decompression - Hugs both knees to chest to release tension throughout the entire spine.' },
+                { name: 'Piriformis Stretch', videoId: '0wAw1-1MHa4', start: 304, end: 309, repeat: 3, loop: true, description: 'Hip and glute stretch - Targets the piriformis muscle deep in the hip to relieve sciatica and hip tightness.' },
+                { name: 'Hamstring Stretch', videoId: '0wAw1-1MHa4', start: 368, end: 373, repeat: 3, loop: true, description: 'Leg flexibility - Stretches the hamstrings to improve flexibility and reduce lower back strain.' },
+                { name: 'Lower Back Extension', videoId: '0wAw1-1MHa4', start: 442, end: 446, repeat: 3, loop: true, description: 'Spinal extension - Gently arches the back to counteract forward bending and improve posture.' },
+                { name: "Child's Pose", videoId: '0wAw1-1MHa4', start: 492, end: 498, repeat: 3, loop: true, description: 'Full body relaxation - Rests in a kneeling position with arms extended to stretch the back and shoulders.' },
+                { name: 'Cat/Cow Stretch', videoId: '0wAw1-1MHa4', start: 568, end: 573, repeat: 3, loop: true, description: 'Spine mobility - Alternates between arching and rounding the spine to increase flexibility and circulation.' },
+                { name: 'Hip Flexor Stretch', videoId: '0wAw1-1MHa4', start: 607, end: 613, repeat: 3, loop: true, description: 'Hip opener - Stretches the front of the hips to counteract sitting and improve hip extension.' }
+            ]
+        };
+
+        let slidersVisible = true;
+        let playerPosition = 'top';
+
+        // Preset configurations
+        const presetConfigs = [
+            {
+                name: "Lower Back Stretches",
+                description: "10 stretches for lower back pain relief",
+                info: "5 min | No equipment | Daily routine",
+                file: "stretch-routine-config.json",
+                config: {
+                    layout: '5x2',
+                    videoId: '0wAw1-1MHa4',
+                    stretches: [
+                        { name: 'Double Knee Rotation', videoId: '0wAw1-1MHa4', start: 138, end: 142, repeat: 3, loop: true, description: 'Lower back stretch - Gently rotates both knees side to side to release tension in the lower back and hips.' },
+                        { name: 'Single Knee Rotation', videoId: '0wAw1-1MHa4', start: 173, end: 177, repeat: 3, loop: true, description: 'Hip mobility - Rotates one knee at a time in circles to improve hip joint flexibility and range of motion.' },
+                        { name: 'Single Knee to Chest', videoId: '0wAw1-1MHa4', start: 219, end: 222, repeat: 3, loop: true, description: 'Lower back relief - Pulls one knee toward chest to stretch the lower back and glutes.' },
+                        { name: 'Double Knee to Chest', videoId: '0wAw1-1MHa4', start: 245, end: 249, repeat: 3, loop: true, description: 'Spine decompression - Hugs both knees to chest to release tension throughout the entire spine.' },
+                        { name: 'Piriformis Stretch', videoId: '0wAw1-1MHa4', start: 304, end: 309, repeat: 3, loop: true, description: 'Hip and glute stretch - Targets the piriformis muscle deep in the hip to relieve sciatica and hip tightness.' },
+                        { name: 'Hamstring Stretch', videoId: '0wAw1-1MHa4', start: 368, end: 373, repeat: 3, loop: true, description: 'Leg flexibility - Stretches the hamstrings to improve flexibility and reduce lower back strain.' },
+                        { name: 'Lower Back Extension', videoId: '0wAw1-1MHa4', start: 442, end: 446, repeat: 3, loop: true, description: 'Spinal extension - Gently arches the back to counteract forward bending and improve posture.' },
+                        { name: "Child's Pose", videoId: '0wAw1-1MHa4', start: 492, end: 498, repeat: 3, loop: true, description: 'Full body relaxation - Rests in a kneeling position with arms extended to stretch the back and shoulders.' },
+                        { name: 'Cat/Cow Stretch', videoId: '0wAw1-1MHa4', start: 568, end: 573, repeat: 3, loop: true, description: 'Spine mobility - Alternates between arching and rounding the spine to increase flexibility and circulation.' },
+                        { name: 'Hip Flexor Stretch', videoId: '0wAw1-1MHa4', start: 607, end: 613, repeat: 3, loop: true, description: 'Hip opener - Stretches the front of the hips to counteract sitting and improve hip extension.' }
+                    ]
+                }
+            },
+            {
+                name: "Hip Strengthening",
+                description: "9 exercises from basic to advanced",
+                info: "20 min | Resistance band + weights | Progressive",
+                file: "hip-exercises-config.json",
+                config: {
+                    layout: '5x2',
+                    videoId: 'NkgdllCCrts',
+                    stretches: [
+                        { name: 'Hip Bridges', videoId: 'NkgdllCCrts', start: 82, end: 148, repeat: 3, loop: true, description: 'Basic / This exercise targets the hip extensors or glute group by lifting the hips off the ground.' },
+                        { name: 'Side-Lying Abduction', videoId: 'NkgdllCCrts', start: 149, end: 187, repeat: 3, loop: true, description: 'Basic / This focuses on strengthening the hip abductors by lifting the top leg sideways.' },
+                        { name: 'Straight Leg Raises', videoId: 'NkgdllCCrts', start: 188, end: 247, repeat: 3, loop: true, description: 'Basic / This exercise strengthens the hip flexors by raising a straight leg towards the ceiling.' },
+                        { name: 'Hip Extension (4-Way)', videoId: 'NkgdllCCrts', start: 283, end: 334, repeat: 3, loop: true, description: 'Intermediate / This exercise involves pulling the leg straight back using a resistance band, targeting the glutes.' },
+                        { name: 'Hip Abduction (4-Way)', videoId: 'NkgdllCCrts', start: 335, end: 369, repeat: 3, loop: true, description: 'Intermediate / This involves pulling the leg out to the side, away from the body, using a resistance band.' },
+                        { name: 'Hip Flexion (4-Way)', videoId: 'NkgdllCCrts', start: 370, end: 408, repeat: 3, loop: true, description: 'Intermediate / This exercise involves pulling the leg forward using a resistance band, targeting the hip flexors.' },
+                        { name: 'Hip Adduction (4-Way)', videoId: 'NkgdllCCrts', start: 409, end: 459, repeat: 3, loop: true, description: 'Intermediate / This involves pulling the leg across the body using a resistance band, targeting the inner thigh muscles.' },
+                        { name: 'Deadlift', videoId: 'NkgdllCCrts', start: 531, end: 636, repeat: 3, loop: true, description: 'Advanced / This is a functional movement focusing on hinging at the hips to lift weight, engaging powerful hip muscles.' },
+                        { name: 'Squat', videoId: 'NkgdllCCrts', start: 637, end: 689, repeat: 3, loop: true, description: 'Advanced / This is a fundamental movement pattern involving bending at the hips and knees to lower the body.' }
+                    ]
+                }
+            },
+            {
+                name: "Neck & Upper Back",
+                description: "6 exercises for neck pain relief",
+                info: "5 min | No equipment | Office-friendly",
+                file: "neck-stretches-config.json",
+                config: {
+                    layout: '5x2',
+                    videoId: 'T64es5lGZr8',
+                    stretches: [
+                        { name: 'Active Motion Warm-Up', videoId: 'T64es5lGZr8', start: 19, end: 81, repeat: 2, loop: true, description: 'Warm-up / Rotation, side bends, flexion/extension, and shoulder rolls. All motions within pain-free range to prepare neck for stretching.' },
+                        { name: 'Upper Trap Stretch', videoId: 'T64es5lGZr8', start: 83, end: 139, repeat: 3, loop: true, description: 'Beginner / Tilt ear to shoulder with gentle hand pressure. Stretches from skull base to shoulder tip. Hold 30 seconds each side.' },
+                        { name: 'Levator Scapulae Stretch', videoId: 'T64es5lGZr8', start: 140, end: 197, repeat: 3, loop: true, description: 'Intermediate / Look towards pocket and apply gentle pressure to back of head. Targets tension and muscle knots from skull to shoulder blade. Hold 30 seconds each side.' },
+                        { name: 'Scalene Stretch', videoId: 'T64es5lGZr8', start: 201, end: 250, repeat: 3, loop: true, description: 'Intermediate / Tilt ear to shoulder then look up. Hands on chest to keep it down. Stretches front neck muscles, pulling chin from collarbone. Hold 30 seconds each side.' },
+                        { name: 'Extension Stretch', videoId: 'T64es5lGZr8', start: 261, end: 291, repeat: 3, loop: true, description: 'Upper Back / Hands at neck base, look up into extension. Hold 3-5 seconds, repeat deeper. Helps unround hunched-forward upper back and thoracic spine.' },
+                        { name: 'Chin Tucks', videoId: 'T64es5lGZr8', start: 293, end: 318, repeat: 3, loop: true, description: 'Posture Correction / Pull chin straight back away from fingers. Stretches skull base (tension headache area) and retrains front neck muscles for better posture.' }
+                    ]
+                }
+            }
+        ];
+
+        let currentPreset = null;
+
+        let players = [];
+        let playerStates = [];
+        let mainPlayerObj = null;
+        let sequentialMode = {
+            active: false,
+            currentIndex: 0,
+            currentRepeat: 0,
+            monitor: null,
+            completedStretches: new Set(),
+            isPaused: false,
+            overallSequenceCount: 0,
+            totalSequences: 1
+        };
+
+        function renderPlaylist() {
+            const container = document.getElementById('playlistItems');
+            
+            // Add overall progress header
+            const overallProgress = document.createElement('div');
+            overallProgress.style.cssText = 'background: rgba(168, 85, 247, 0.2); border-radius: 0.5rem; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid rgba(168, 85, 247, 0.4);';
+            overallProgress.innerHTML = `
+                <div style="color: #d8b4fe; font-size: 0.75rem; margin-bottom: 0.25rem;">Overall Progress</div>
+                <div style="color: white; font-size: 1rem; font-weight: 600;">
+                    Sequence ${sequentialMode.active ? sequentialMode.overallSequenceCount + 1 : 1}/${sequentialMode.totalSequences}
+                </div>
+                <div style="color: #e9d5ff; font-size: 0.7rem; margin-top: 0.25rem;">
+                    ${sequentialMode.completedStretches.size}/${config.stretches.length} stretches completed
+                </div>
+            `;
+            
+            container.innerHTML = '';
+            container.appendChild(overallProgress);
+            
+            config.stretches.forEach((stretch, index) => {
+                const item = document.createElement('div');
+                item.className = 'playlist-item';
+                
+                // Mark as current
+                if (sequentialMode.active && index === sequentialMode.currentIndex) {
+                    item.classList.add('current');
+                }
+                
+                // Mark as completed
+                if (sequentialMode.completedStretches.has(index)) {
+                    item.classList.add('completed');
+                }
+                
+                const duration = stretch.end - stretch.start;
+                const currentRepeat = index === sequentialMode.currentIndex ? sequentialMode.currentRepeat + 1 : 0;
+                const repeatText = currentRepeat > 0 ? `${currentRepeat}/${stretch.repeat}` : `0/${stretch.repeat}`;
+                
+                item.innerHTML = `
+                    <div class="playlist-item-header">
+                        <span class="playlist-item-number">#${String(index + 1).padStart(2, '0')}</span>
+                        ${sequentialMode.completedStretches.has(index) ? '<span style="color: #4ade80;">✓</span>' : ''}
+                    </div>
+                    <div class="playlist-item-name">${stretch.name}</div>
+                    <div class="playlist-item-info">
+                        <span>${formatTime(duration)}</span>
+                        <span class="playlist-item-repeat">${repeatText} repeats</span>
+                    </div>
+                `;
+                
+                // Click to jump to this stretch
+                item.onclick = () => jumpToStretch(index);
+                
+                container.appendChild(item);
+            });
+        }
+
+        function jumpToStretch(index) {
+            if (!sequentialMode.active) {
+                sequentialMode.active = true;
+            }
+            
+            // Clear existing monitor
+            if (sequentialMode.monitor) {
+                clearInterval(sequentialMode.monitor);
+                sequentialMode.monitor = null;
+            }
+            
+            sequentialMode.currentIndex = index;
+            sequentialMode.currentRepeat = 0;
+            playCurrentInSequence();
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tab + '-tab').classList.add('active');
+            
+            if (tab === 'config') {
+                updateConfigPreview();
+            }
+        }
+
+        function changeLayout() {
+            config.layout = document.getElementById('layoutSelect').value;
+            const grid = document.getElementById('stretchGrid');
+            grid.className = `stretch-grid layout-${config.layout}`;
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('stretchGrid');
+            grid.className = `stretch-grid layout-${config.layout}`;
+            grid.innerHTML = '';
+            
+            config.stretches.forEach((stretch, index) => {
+                const duration = stretch.end - stretch.start;
+                const card = document.createElement('div');
+                card.className = 'stretch-card';
+                
+                card.innerHTML = `
+                    <div class="stretch-header">
+                        <div class="stretch-info">
+                            <div class="stretch-number">${String(index + 1).padStart(2, '0')}</div>
+                            <h3 class="stretch-name">${stretch.name}</h3>
+                            <div class="stretch-duration">Duration: ${formatTime(duration)} | Repeat: ${stretch.repeat}x ${stretch.loop ? '(∞ Loop)' : ''}</div>
+                            ${stretch.description ? `<div class="stretch-description" style="color: #c4b5fd; font-size: 0.75rem; margin-top: 0.5rem; line-height: 1.4;">${stretch.description}</div>` : ''}
+                        </div>
+                        <div class="stretch-controls">
+                            <button class="loop-toggle ${stretch.loop ? 'active' : ''}" id="loop-${index}" onclick="toggleLoop(${index})">∞</button>
+                            <button class="sound-toggle" id="sound-${index}" onclick="toggleSound(${index})">
+                                <svg class="icon" id="mute-icon-${index}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+                                </svg>
+                                <svg class="icon" id="unmute-icon-${index}" style="display:none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="video-wrapper">
+                        <div class="playing-indicator" id="indicator-${index}" style="display:none;"></div>
+                        ${stretch.loop ? '<div class="loop-badge">∞ LOOP</div>' : ''}
+                        <div class="timer-badge" id="timer-${index}">0:00</div>
+                        <div id="player-${index}"></div>
+                    </div>
+                    <div class="slider-group ${slidersVisible ? '' : 'hidden'}" id="slider-group-${index}">
+                        <div class="slider-label">
+                            <span>Video ID:</span>
+                            <input type="text" class="repeat-input" style="width: 150px; flex: 1;" id="video-input-${index}" 
+                                   value="${stretch.videoId || config.videoId}" 
+                                   onchange="updateVideoId(${index}, this.value)"
+                                   placeholder="YouTube Video ID">
+                        </div>
+                        
+                        <div class="slider-label" style="margin-top: 0.75rem;">
+                            <span>Description:</span>
+                        </div>
+                        <textarea class="control-input" id="description-${index}" 
+                                  style="min-height: 60px; font-size: 0.75rem; resize: vertical;" 
+                                  onchange="updateDescription(${index}, this.value)"
+                                  placeholder="Add a description for this stretch...">${stretch.description || ''}</textarea>
+                        
+                        <div class="slider-label" style="margin-top: 0.5rem;">
+                            <span>Start Time:</span>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <input type="text" class="repeat-input" style="width: 80px;" id="start-input-${index}" 
+                                       value="${formatTime(stretch.start)}" 
+                                       onchange="updateStartFromInput(${index}, this.value)"
+                                       placeholder="0:00">
+                                <span id="start-val-${index}" style="color: #86efac;">${stretch.start}s</span>
+                            </div>
+                        </div>
+                        <input type="range" class="slider" id="start-slider-${index}" min="0" max="3600" value="${stretch.start}" 
+                               oninput="updateStartFromSlider(${index}, this.value)">
+                        
+                        <div class="slider-label">
+                            <span>End Time:</span>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <input type="text" class="repeat-input" style="width: 80px;" id="end-input-${index}" 
+                                       value="${formatTime(stretch.end)}" 
+                                       onchange="updateEndFromInput(${index}, this.value)"
+                                       placeholder="0:00">
+                                <span id="end-val-${index}" style="color: #86efac;">${stretch.end}s</span>
+                            </div>
+                        </div>
+                        <input type="range" class="slider" id="end-slider-${index}" min="0" max="3600" value="${stretch.end}" 
+                               oninput="updateEndFromSlider(${index}, this.value)">
+                        
+                        <div class="slider-label" style="margin-top: 0.5rem;">
+                            <span>Repeats (Sequential Mode):</span>
+                            <input type="number" class="repeat-input" min="1" max="99" value="${stretch.repeat}" 
+                                   onchange="updateRepeat(${index}, this.value)">
+                        </div>
+                        
+                        <div class="grid-management-btns">
+                            <button class="grid-mgmt-btn" onclick="moveStretchUp(${index})" title="Move Up">↑</button>
+                            <button class="grid-mgmt-btn" onclick="moveStretchDown(${index})" title="Move Down">↓</button>
+                            <button class="grid-mgmt-btn" onclick="cloneStretch(${index})" title="Clone">📋 Clone</button>
+                            <button class="grid-mgmt-btn danger" onclick="deleteStretch(${index})" title="Delete">🗑️ Delete</button>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+                playerStates[index] = { muted: true, playing: false, monitor: null };
+            });
+        }
+
+        function timeToSeconds(timeStr) {
+            // Convert "M:SS" or "MM:SS" or "H:MM:SS" to seconds
+            const parts = timeStr.split(':').map(p => parseInt(p) || 0);
+            if (parts.length === 2) {
+                return parts[0] * 60 + parts[1];
+            } else if (parts.length === 3) {
+                return parts[0] * 3600 + parts[1] * 60 + parts[2];
+            }
+            return parseInt(timeStr) || 0;
+        }
+
+        function updateStartFromSlider(index, value) {
+            const seconds = parseInt(value);
+            config.stretches[index].start = seconds;
+            
+            // Update both displays
+            document.getElementById(`start-val-${index}`).textContent = seconds + 's';
+            document.getElementById(`start-input-${index}`).value = formatTime(seconds);
+            
+            // Update player
+            if (players[index]) {
+                players[index].seekTo(seconds);
+            }
+        }
+
+        function updateStartFromInput(index, value) {
+            const seconds = timeToSeconds(value);
+            config.stretches[index].start = seconds;
+            
+            // Update slider and displays
+            document.getElementById(`start-slider-${index}`).value = seconds;
+            document.getElementById(`start-val-${index}`).textContent = seconds + 's';
+            document.getElementById(`start-input-${index}`).value = formatTime(seconds);
+            
+            // Update player
+            if (players[index]) {
+                players[index].seekTo(seconds);
+            }
+        }
+
+        function updateEndFromSlider(index, value) {
+            const seconds = parseInt(value);
+            config.stretches[index].end = seconds;
+            
+            // Update both displays
+            document.getElementById(`end-val-${index}`).textContent = seconds + 's';
+            document.getElementById(`end-input-${index}`).value = formatTime(seconds);
+        }
+
+        function updateEndFromInput(index, value) {
+            const seconds = timeToSeconds(value);
+            config.stretches[index].end = seconds;
+            
+            // Update slider and displays
+            document.getElementById(`end-slider-${index}`).value = seconds;
+            document.getElementById(`end-val-${index}`).textContent = seconds + 's';
+            document.getElementById(`end-input-${index}`).value = formatTime(seconds);
+        }
+
+        function updateRepeat(index, value) {
+            config.stretches[index].repeat = parseInt(value);
+            renderPlaylist();
+        }
+
+        function updateDescription(index, value) {
+            config.stretches[index].description = value.trim();
+            renderGrid();
+        }
+
+        function renderPresetList() {
+            const container = document.getElementById('presetList');
+            container.innerHTML = '';
+            
+            presetConfigs.forEach((preset, index) => {
+                const item = document.createElement('div');
+                item.className = 'preset-item';
+                if (currentPreset === index) {
+                    item.classList.add('active');
+                }
+                
+                item.innerHTML = `
+                    <div class="preset-item-name">${preset.name}</div>
+                    <div class="preset-item-desc">${preset.description}</div>
+                    <div class="preset-item-info">${preset.info}</div>
+                `;
+                
+                item.onclick = () => loadPreset(index);
+                container.appendChild(item);
+            });
+        }
+
+        function loadPreset(index) {
+            const preset = presetConfigs[index];
+            config = JSON.parse(JSON.stringify(preset.config)); // Deep clone
+            currentPreset = index;
+            
+            document.getElementById('layoutSelect').value = config.layout;
+            
+            renderGrid();
+            initializePlayers();
+            updateConfigPreview();
+            renderPlaylist();
+            renderPresetList();
+            
+            // Show notification
+            document.getElementById('mainTitle').textContent = `Loaded: ${preset.name}`;
+            document.getElementById('mainProgress').textContent = preset.description;
+            setTimeout(() => {
+                if (!sequentialMode.active) {
+                    document.getElementById('mainTitle').textContent = 'Sequential Player';
+                    document.getElementById('mainProgress').textContent = 'Press Start to begin sequential playback';
+                }
+            }, 3000);
+        }
+
+        function cloneStretch(index) {
+            const stretch = JSON.parse(JSON.stringify(config.stretches[index])); // Deep clone
+            config.stretches.splice(index + 1, 0, stretch);
+            renderGrid();
+            initializePlayers();
+            updateConfigPreview();
+            renderPlaylist();
+        }
+
+        function deleteStretch(index) {
+            if (config.stretches.length <= 1) {
+                alert('Cannot delete the last stretch!');
+                return;
+            }
+            
+            if (confirm(`Delete "${config.stretches[index].name}"?`)) {
+                config.stretches.splice(index, 1);
+                renderGrid();
+                initializePlayers();
+                updateConfigPreview();
+                renderPlaylist();
+            }
+        }
+
+        function moveStretchUp(index) {
+            if (index === 0) return; // Already at top
+            
+            const temp = config.stretches[index];
+            config.stretches[index] = config.stretches[index - 1];
+            config.stretches[index - 1] = temp;
+            
+            renderGrid();
+            initializePlayers();
+            updateConfigPreview();
+            renderPlaylist();
+        }
+
+        function moveStretchDown(index) {
+            if (index === config.stretches.length - 1) return; // Already at bottom
+            
+            const temp = config.stretches[index];
+            config.stretches[index] = config.stretches[index + 1];
+            config.stretches[index + 1] = temp;
+            
+            renderGrid();
+            initializePlayers();
+            updateConfigPreview();
+            renderPlaylist();
+        }
+
+        function updateVideoId(index, value) {
+            config.stretches[index].videoId = value.trim();
+            // Reinitialize this specific player with new video
+            if (players[index]) {
+                players[index].destroy();
+                players[index] = new YT.Player(`player-${index}`, {
+                    height: '100%',
+                    width: '100%',
+                    videoId: value.trim(),
+                    playerVars: {
+                        'start': config.stretches[index].start,
+                        'end': config.stretches[index].end,
+                        'autoplay': 0,
+                        'controls': 1,
+                        'modestbranding': 1,
+                        'rel': 0
+                    },
+                    events: {
+                        'onReady': (event) => onPlayerReady(event, index),
+                        'onStateChange': (event) => onPlayerStateChange(event, index)
+                    }
+                });
+            }
+        }
+
+        function toggleSliders() {
+            slidersVisible = !slidersVisible;
+            const btn = document.getElementById('toggleSlidersBtn');
+            
+            config.stretches.forEach((_, index) => {
+                const sliderGroup = document.getElementById(`slider-group-${index}`);
+                if (sliderGroup) {
+                    if (slidersVisible) {
+                        sliderGroup.classList.remove('hidden');
+                    } else {
+                        sliderGroup.classList.add('hidden');
+                    }
+                }
+            });
+            
+            btn.innerHTML = slidersVisible ? `
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                </svg>
+                Hide Sliders
+            ` : `
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+                Show Sliders
+            `;
+        }
+
+        function changePlayerPosition() {
+            const position = document.getElementById('playerPosition').value;
+            playerPosition = position;
+            const player = document.getElementById('sequentialPlayer');
+            
+            // Remove all position classes
+            player.classList.remove('position-top', 'position-left', 'position-right', 'position-bottom', 'hidden');
+            
+            // Add new position class
+            if (position === 'hidden') {
+                player.classList.add('hidden');
+            } else {
+                player.classList.add(`position-${position}`);
+            }
+        }
+
+        function toggleLoop(index) {
+            config.stretches[index].loop = !config.stretches[index].loop;
+            const btn = document.getElementById(`loop-${index}`);
+            btn.classList.toggle('active');
+            renderGrid();
+            initializePlayers();
+            renderPlaylist();
+        }
+
+        function onYouTubeIframeAPIReady() {
+            renderGrid();
+            initializePlayers();
+            updateConfigPreview();
+            renderPlaylist();
+            renderPresetList();
+        }
+
+        function initializePlayers() {
+            // Clear existing players
+            players.forEach(p => p && p.destroy());
+            players = [];
+            
+            config.stretches.forEach((stretch, index) => {
+                players[index] = new YT.Player(`player-${index}`, {
+                    height: '100%',
+                    width: '100%',
+                    videoId: stretch.videoId || config.videoId,
+                    playerVars: {
+                        'start': stretch.start,
+                        'end': stretch.end,
+                        'autoplay': 0,
+                        'controls': 1,
+                        'modestbranding': 1,
+                        'rel': 0
+                    },
+                    events: {
+                        'onReady': (event) => onPlayerReady(event, index),
+                        'onStateChange': (event) => onPlayerStateChange(event, index)
+                    }
+                });
+            });
+
+            // Initialize main player
+            if (!mainPlayerObj) {
+                mainPlayerObj = new YT.Player('mainPlayer', {
+                    height: '100%',
+                    width: '100%',
+                    videoId: config.videoId,
+                    playerVars: {
+                        'autoplay': 0,
+                        'controls': 1,
+                        'modestbranding': 1,
+                        'rel': 0
+                    },
+                    events: {
+                        'onStateChange': onMainPlayerStateChange
+                    }
+                });
+            }
+        }
+
+        function onPlayerReady(event, index) {
+            event.target.mute();
+            
+            setInterval(() => {
+                if (playerStates[index].playing) {
+                    const currentTime = players[index].getCurrentTime();
+                    const elapsed = Math.floor(currentTime - config.stretches[index].start);
+                    const duration = config.stretches[index].end - config.stretches[index].start;
+                    const remaining = duration - elapsed;
+                    
+                    if (remaining >= 0) {
+                        document.getElementById(`timer-${index}`).textContent = formatTime(remaining);
+                    }
+                }
+            }, 1000);
+        }
+
+        function onPlayerStateChange(event, index) {
+            const player = event.target;
+            const stretch = config.stretches[index];
+            
+            if (event.data == YT.PlayerState.PLAYING) {
+                playerStates[index].playing = true;
+                document.getElementById(`indicator-${index}`).style.display = 'block';
+                
+                // Clear existing monitor if any
+                if (playerStates[index].monitor) {
+                    clearInterval(playerStates[index].monitor);
+                }
+                
+                // Set up new monitor
+                const monitor = setInterval(() => {
+                    const currentTime = player.getCurrentTime();
+                    
+                    // Check if we've reached the end
+                    if (currentTime >= stretch.end) {
+                        if (stretch.loop) {
+                            // Loop enabled - restart from beginning
+                            player.seekTo(stretch.start);
+                            // Don't stop playing, let it continue
+                        } else {
+                            // Loop disabled - stop
+                            clearInterval(monitor);
+                            playerStates[index].monitor = null;
+                            player.pauseVideo();
+                            player.seekTo(stretch.start);
+                        }
+                    } else if (currentTime < stretch.start) {
+                        // Went before start - seek back to start
+                        player.seekTo(stretch.start);
+                    }
+                }, 100);
+                
+                playerStates[index].monitor = monitor;
+            } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+                playerStates[index].playing = false;
+                document.getElementById(`indicator-${index}`).style.display = 'none';
+                
+                // Only clear monitor if loop is disabled
+                if (!stretch.loop && playerStates[index].monitor) {
+                    clearInterval(playerStates[index].monitor);
+                    playerStates[index].monitor = null;
+                }
+            }
+        }
+
+        function onMainPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING && sequentialMode.active && !sequentialMode.isPaused) {
+                // Set up a monitor to check if we've reached the end time
+                if (sequentialMode.monitor) {
+                    clearInterval(sequentialMode.monitor);
+                }
+                
+                sequentialMode.monitor = setInterval(() => {
+                    if (!sequentialMode.active || sequentialMode.isPaused) {
+                        clearInterval(sequentialMode.monitor);
+                        return;
+                    }
+                    
+                    const stretch = config.stretches[sequentialMode.currentIndex];
+                    const currentTime = mainPlayerObj.getCurrentTime();
+                    
+                    // Check if we've reached the end of the current stretch
+                    if (currentTime >= stretch.end) {
+                        clearInterval(sequentialMode.monitor);
+                        playNextInSequence();
+                    }
+                }, 100);
+            } else if (event.data == YT.PlayerState.ENDED && sequentialMode.active && !sequentialMode.isPaused) {
+                // Fallback in case the video actually ends
+                playNextInSequence();
+            } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+                if (sequentialMode.monitor) {
+                    clearInterval(sequentialMode.monitor);
+                }
+            }
+        }
+
+        function toggleSound(index) {
+            const player = players[index];
+            const soundBtn = document.getElementById(`sound-${index}`);
+            const muteIcon = document.getElementById(`mute-icon-${index}`);
+            const unmuteIcon = document.getElementById(`unmute-icon-${index}`);
+            
+            if (playerStates[index].muted) {
+                players.forEach((p, i) => {
+                    if (i !== index) {
+                        p.mute();
+                        playerStates[i].muted = true;
+                        document.getElementById(`sound-${i}`).classList.remove('unmuted');
+                        document.getElementById(`mute-icon-${i}`).style.display = 'block';
+                        document.getElementById(`unmute-icon-${i}`).style.display = 'none';
+                    }
+                });
+                
+                player.unMute();
+                playerStates[index].muted = false;
+                soundBtn.classList.add('unmuted');
+                muteIcon.style.display = 'none';
+                unmuteIcon.style.display = 'block';
+            } else {
+                player.mute();
+                playerStates[index].muted = true;
+                soundBtn.classList.remove('unmuted');
+                muteIcon.style.display = 'block';
+                unmuteIcon.style.display = 'none';
+            }
+        }
+
+        function playAllGrid() {
+            players.forEach((player, index) => {
+                player.mute();
+                playerStates[index].muted = true;
+                player.seekTo(config.stretches[index].start);
+                player.playVideo();
+                
+                document.getElementById(`sound-${index}`).classList.remove('unmuted');
+                document.getElementById(`mute-icon-${index}`).style.display = 'block';
+                document.getElementById(`unmute-icon-${index}`).style.display = 'none';
+            });
+        }
+
+        function stopAllGrid() {
+            players.forEach((player, index) => {
+                player.pauseVideo();
+                player.seekTo(config.stretches[index].start);
+                document.getElementById(`timer-${index}`).textContent = formatTime(config.stretches[index].end - config.stretches[index].start);
+            });
+        }
+
+        function muteAllGrid() {
+            players.forEach((player, index) => {
+                player.mute();
+                playerStates[index].muted = true;
+                
+                document.getElementById(`sound-${index}`).classList.remove('unmuted');
+                document.getElementById(`mute-icon-${index}`).style.display = 'block';
+                document.getElementById(`unmute-icon-${index}`).style.display = 'none';
+            });
+        }
+
+        function startSequential() {
+            // Clear any existing monitor
+            if (sequentialMode.monitor) {
+                clearInterval(sequentialMode.monitor);
+                sequentialMode.monitor = null;
+            }
+            
+            sequentialMode.active = true;
+            sequentialMode.currentIndex = 0;
+            sequentialMode.currentRepeat = 0;
+            sequentialMode.completedStretches.clear();
+            sequentialMode.isPaused = false;
+            sequentialMode.overallSequenceCount = 0;
+            sequentialMode.totalSequences = parseInt(document.getElementById('overallRepeats').value) || 1;
+            
+            renderPlaylist();
+            playCurrentInSequence();
+        }
+
+        function playCurrentInSequence() {
+            if (sequentialMode.currentIndex >= config.stretches.length) {
+                stopSequential();
+                return;
+            }
+
+            const stretch = config.stretches[sequentialMode.currentIndex];
+            const repeatText = `(Repeat ${sequentialMode.currentRepeat + 1}/${stretch.repeat})`;
+            const overallText = `[Sequence ${sequentialMode.overallSequenceCount + 1}/${sequentialMode.totalSequences}]`;
+            
+            document.getElementById('mainTitle').textContent = stretch.name;
+            document.getElementById('mainProgress').textContent = 
+                `Stretch ${sequentialMode.currentIndex + 1}/${config.stretches.length} ${repeatText} ${overallText}`;
+            
+            // Update playlist display
+            renderPlaylist();
+            
+            // Use the stretch's specific video ID or fall back to global
+            const videoId = stretch.videoId || config.videoId;
+            
+            mainPlayerObj.loadVideoById({
+                videoId: videoId,
+                startSeconds: stretch.start,
+                endSeconds: stretch.end
+            });
+            
+            // Ensure video plays
+            setTimeout(() => {
+                mainPlayerObj.playVideo();
+            }, 100);
+        }
+
+        function playNextInSequence() {
+            if (!sequentialMode.active) return;
+            
+            // Clear any existing monitor
+            if (sequentialMode.monitor) {
+                clearInterval(sequentialMode.monitor);
+                sequentialMode.monitor = null;
+            }
+            
+            const stretch = config.stretches[sequentialMode.currentIndex];
+            sequentialMode.currentRepeat++;
+            
+            // Continue repeating current stretch if not done
+            if (sequentialMode.currentRepeat < stretch.repeat) {
+                // Get pause duration for REPEATS (same stretch)
+                const pauseDuration = parseInt(document.getElementById('pauseRepeat').value) || 0;
+                
+                // Show pause indicator
+                if (pauseDuration > 0) {
+                    sequentialMode.isPaused = true;
+                    document.getElementById('mainTitle').textContent = `Pausing...`;
+                    document.getElementById('mainProgress').textContent = 
+                        `${pauseDuration} seconds until next repeat of ${stretch.name}`;
+                    renderPlaylist();
+                    
+                    // Wait for pause duration then continue
+                    setTimeout(() => {
+                        sequentialMode.isPaused = false;
+                        playCurrentInSequence();
+                    }, pauseDuration * 1000);
+                } else {
+                    playCurrentInSequence();
+                }
+            } else {
+                // Mark current stretch as completed
+                sequentialMode.completedStretches.add(sequentialMode.currentIndex);
+                
+                // Move to next stretch
+                sequentialMode.currentRepeat = 0;
+                sequentialMode.currentIndex++;
+                
+                // Check if we've completed all stretches in this sequence
+                if (sequentialMode.currentIndex >= config.stretches.length) {
+                    // Completed one full sequence
+                    sequentialMode.overallSequenceCount++;
+                    
+                    // Check if we need to repeat the entire sequence
+                    if (sequentialMode.overallSequenceCount < sequentialMode.totalSequences) {
+                        // Start over from the beginning
+                        sequentialMode.currentIndex = 0;
+                        sequentialMode.currentRepeat = 0;
+                        sequentialMode.completedStretches.clear();
+                        
+                        // Get pause duration for VIDEO transitions
+                        const pauseDuration = parseInt(document.getElementById('pauseVideo').value) || 0;
+                        
+                        if (pauseDuration > 0) {
+                            sequentialMode.isPaused = true;
+                            document.getElementById('mainTitle').textContent = `Sequence ${sequentialMode.overallSequenceCount}/${sequentialMode.totalSequences} Complete! 🎉`;
+                            document.getElementById('mainProgress').textContent = 
+                                `Starting sequence ${sequentialMode.overallSequenceCount + 1} in ${pauseDuration} seconds...`;
+                            renderPlaylist();
+                            
+                            setTimeout(() => {
+                                sequentialMode.isPaused = false;
+                                playCurrentInSequence();
+                            }, pauseDuration * 1000);
+                        } else {
+                            playCurrentInSequence();
+                        }
+                    } else {
+                        // All sequences complete!
+                        stopSequential();
+                        document.getElementById('mainTitle').textContent = `All Sequences Complete! 🎉🎉`;
+                        document.getElementById('mainProgress').textContent = 
+                            `Completed ${sequentialMode.totalSequences} full routine(s)!`;
+                        renderPlaylist();
+                    }
+                } else {
+                    // Moving to next stretch in same sequence
+                    // Get pause duration for VIDEO transitions
+                    const pauseDuration = parseInt(document.getElementById('pauseVideo').value) || 0;
+                    const nextStretch = config.stretches[sequentialMode.currentIndex];
+                    
+                    if (pauseDuration > 0) {
+                        sequentialMode.isPaused = true;
+                        document.getElementById('mainTitle').textContent = `Pausing...`;
+                        document.getElementById('mainProgress').textContent = 
+                            `${pauseDuration} seconds until ${nextStretch.name}`;
+                        renderPlaylist();
+                        
+                        setTimeout(() => {
+                            sequentialMode.isPaused = false;
+                            playCurrentInSequence();
+                        }, pauseDuration * 1000);
+                    } else {
+                        playCurrentInSequence();
+                    }
+                }
+            }
+        }
+
+        function stopSequential() {
+            sequentialMode.active = false;
+            sequentialMode.isPaused = false;
+            if (sequentialMode.monitor) {
+                clearInterval(sequentialMode.monitor);
+                sequentialMode.monitor = null;
+            }
+            mainPlayerObj.stopVideo();
+            document.getElementById('mainTitle').textContent = 'Stopped';
+            document.getElementById('mainProgress').textContent = 'Press Start to restart';
+            renderPlaylist();
+        }
+
+        function skipNext() {
+            if (sequentialMode.active) {
+                // Clear existing monitor
+                if (sequentialMode.monitor) {
+                    clearInterval(sequentialMode.monitor);
+                    sequentialMode.monitor = null;
+                }
+                
+                sequentialMode.currentRepeat = 0;
+                sequentialMode.currentIndex++;
+                playCurrentInSequence();
+            }
+        }
+
+        function saveCurrentConfig() {
+            updateConfigPreview();
+            alert('Configuration saved! Switch to Configuration tab to download.');
+        }
+
+        function updateConfigPreview() {
+            document.getElementById('configPreview').value = JSON.stringify(config, null, 2);
+            document.getElementById('layoutSelect').value = config.layout;
+        }
+
+        function downloadConfig() {
+            const dataStr = JSON.stringify(config, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'stretch-routine-config.json';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function loadConfig(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        config = JSON.parse(e.target.result);
+                        currentPreset = null; // Clear preset selection when loading custom file
+                        document.getElementById('layoutSelect').value = config.layout || '5x2';
+                        renderGrid();
+                        initializePlayers();
+                        updateConfigPreview();
+                        renderPlaylist();
+                        renderPresetList();
+                        alert('Configuration loaded successfully!');
+                    } catch (error) {
+                        alert('Error loading configuration: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function resetConfig() {
+            if (confirm('Are you sure you want to reset to default configuration?')) {
+                loadPreset(0); // Load first preset (Lower Back Stretches)
+            }
+        }
+    </script>
+</body>
+</html>

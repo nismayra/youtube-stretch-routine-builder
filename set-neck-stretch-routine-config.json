@@ -1,0 +1,114 @@
+{
+  "layout": "5x2",
+  "videoId": "T64es5lGZr8",
+  "stretches": [
+    {
+      "name": "Active Motion Warm-Up1",
+      "videoId": "T64es5lGZr8",
+      "start": 33,
+      "end": 38,
+      "repeat": 2,
+      "loop": true,
+      "description": ""
+    },
+    {
+      "name": "Active Motion Warm-Up2",
+      "videoId": "T64es5lGZr8",
+      "start": 46,
+      "end": 50,
+      "repeat": 2,
+      "loop": true,
+      "description": ""
+    },
+    {
+      "name": "Active Motion Warm-Up3",
+      "videoId": "T64es5lGZr8",
+      "start": 60,
+      "end": 69,
+      "repeat": 2,
+      "loop": true,
+      "description": ""
+    },
+    {
+      "name": "Active Motion Warm-Up4",
+      "videoId": "T64es5lGZr8",
+      "start": 74,
+      "end": 80,
+      "repeat": 2,
+      "loop": true,
+      "description": ""
+    },
+    {
+      "name": "Upper Trap Stretch",
+      "videoId": "T64es5lGZr8",
+      "start": 105,
+      "end": 130,
+      "repeat": 3,
+      "loop": true,
+      "description": "Beginner / Tilt ear to shoulder with gentle hand pressure. Stretches from skull base to shoulder tip. Hold 30 seconds each side."
+    },
+    {
+      "name": "Levator Scapulae Stretch",
+      "videoId": "T64es5lGZr8",
+      "start": 170,
+      "end": 185,
+      "repeat": 3,
+      "loop": true,
+      "description": "Intermediate / Look towards pocket and apply gentle pressure to back of head. Targets tension and muscle knots from skull to shoulder blade. Hold 30 seconds each side."
+    },
+    {
+      "name": "Scalene Stretch",
+      "videoId": "T64es5lGZr8",
+      "start": 230,
+      "end": 245,
+      "repeat": 3,
+      "loop": true,
+      "description": "Intermediate / Tilt ear to shoulder then look up. Hands on chest to keep it down. Stretches front neck muscles, pulling chin from collarbone. Hold 30 seconds each side."
+    },
+    {
+      "name": "Extension Stretch",
+      "videoId": "T64es5lGZr8",
+      "start": 281,
+      "end": 291,
+      "repeat": 3,
+      "loop": true,
+      "description": "Upper Back / Hands at neck base, look up into extension. Hold 3-5 seconds, repeat deeper. Helps unround hunched-forward upper back and thoracic spine."
+    },
+    {
+      "name": "Chin Tucks",
+      "videoId": "T64es5lGZr8",
+      "start": 306,
+      "end": 311,
+      "repeat": 3,
+      "loop": true,
+      "description": "Posture Correction / Pull chin straight back away from fingers. Stretches skull base (tension headache area) and retrains front neck muscles for better posture."
+    },
+   {
+      "name": "front neck 1",
+      "videoId": "JrhpzJccfPY",
+      "start": 2,
+      "end": 5,
+      "repeat": 3,
+      "loop": true,
+      "description": ""
+    },
+   {
+      "name": "front neck 2",
+      "videoId": "JrhpzJccfPY",
+      "start": 6,
+      "end": 8,
+      "repeat": 3,
+      "loop": true,
+      "description": ""
+    },
+   {
+      "name": "front neck 3",
+      "videoId": "JrhpzJccfPY",
+      "start": 8,
+      "end": 11,
+      "repeat": 3,
+      "loop": true,
+      "description": ""
+    }
+  ]
+}

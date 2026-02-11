@@ -1,0 +1,87 @@
+{
+  "layout": "5x2",
+  "videoId": "NkgdllCCrts",
+  "stretches": [
+    {
+      "name": "Hip Bridges",
+      "videoId": "NkgdllCCrts",
+      "start": 102,
+      "end": 108,
+      "repeat": 3,
+      "loop": true,
+      "description": "Basic / This exercise targets the hip extensors or glute group by lifting the hips off the ground."
+    },
+    {
+      "name": "Side-Lying Abduction",
+      "videoId": "NkgdllCCrts",
+      "start": 164,
+      "end": 167,
+      "repeat": 3,
+      "loop": true,
+      "description": "Basic / This focuses on strengthening the hip abductors by lifting the top leg sideways."
+    },
+    {
+      "name": "Straight Leg Raises",
+      "videoId": "NkgdllCCrts",
+      "start": 240,
+      "end": 244,
+      "repeat": 3,
+      "loop": true,
+      "description": "Basic / This exercise strengthens the hip flexors by raising a straight leg towards the ceiling."
+    },
+    {
+      "name": "Hip Extension (4-Way)",
+      "videoId": "NkgdllCCrts",
+      "start": 306,
+      "end": 314,
+      "repeat": 3,
+      "loop": true,
+      "description": "Intermediate / This exercise involves pulling the leg straight back using a resistance band, targeting the glutes."
+    },
+    {
+      "name": "Hip Abduction (4-Way)",
+      "videoId": "NkgdllCCrts",
+      "start": 355,
+      "end": 362,
+      "repeat": 3,
+      "loop": true,
+      "description": "Intermediate / This involves pulling the leg out to the side, away from the body, using a resistance band."
+    },
+    {
+      "name": "Hip Flexion (4-Way)",
+      "videoId": "NkgdllCCrts",
+      "start": 404,
+      "end": 408,
+      "repeat": 3,
+      "loop": true,
+      "description": "Intermediate / This exercise involves pulling the leg forward using a resistance band, targeting the hip flexors."
+    },
+    {
+      "name": "Hip Adduction (4-Way)",
+      "videoId": "NkgdllCCrts",
+      "start": 450,
+      "end": 454,
+      "repeat": 3,
+      "loop": true,
+      "description": "Intermediate / This involves pulling the leg across the body using a resistance band, targeting the inner thigh muscles."
+    },
+    {
+      "name": "Deadlift",
+      "videoId": "NkgdllCCrts",
+      "start": 618,
+      "end": 627,
+      "repeat": 3,
+      "loop": true,
+      "description": "Advanced / This is a functional movement focusing on hinging at the hips to lift weight, engaging powerful hip muscles."
+    },
+    {
+      "name": "Squat",
+      "videoId": "NkgdllCCrts",
+      "start": 682,
+      "end": 686,
+      "repeat": 3,
+      "loop": true,
+      "description": "Advanced / This is a fundamental movement pattern involving bending at the hips and knees to lower the body."
+    }
+  ]
+}
