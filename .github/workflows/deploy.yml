@@ -44,7 +44,7 @@ jobs:
 
       # Inject YouTube API Key (if configured)
       - name: Inject YouTube API Key
-        if: ${{ secrets.YOUTUBE_API_KEY != '' }}
+        if: ${{ vars.YOUTUBE_API_ENABLED == 'true' }}
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
@@ -53,7 +53,7 @@ jobs:
 
       # Inject Google Analytics (if configured)
       - name: Inject Google Analytics
-        if: ${{ secrets.GOOGLE_ANALYTICS_ID != '' }}
+        if: ${{ vars.GA_ENABLED == 'true' }}
         env:
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
         run: |
