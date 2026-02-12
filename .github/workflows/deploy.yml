@@ -42,6 +42,26 @@ jobs:
           sed -i 's|__FIREBASE_SCRIPTS_END__ -->|<!-- /firebase enabled -->|g' stretch-routine-builder.html
           echo "Firebase config injected successfully"
 
+      # Inject YouTube API Key (if configured)
+      - name: Inject YouTube API Key
+        if: ${{ secrets.YOUTUBE_API_KEY != '' }}
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: |
+          sed -i "s|__YOUTUBE_API_KEY__|${YOUTUBE_API_KEY}|g" stretch-routine-builder.html
+          echo "YouTube API key injected successfully"
+
+      # Inject Google Analytics (if configured)
+      - name: Inject Google Analytics
+        if: ${{ secrets.GOOGLE_ANALYTICS_ID != '' }}
+        env:
+          GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
+        run: |
+          sed -i "s|__GOOGLE_ANALYTICS_ID__|${GOOGLE_ANALYTICS_ID}|g" stretch-routine-builder.html
+          sed -i 's|<!-- __GA_SCRIPTS_START__|<!-- ga enabled -->|g' stretch-routine-builder.html
+          sed -i 's|__GA_SCRIPTS_END__ -->|<!-- /ga enabled -->|g' stretch-routine-builder.html
+          echo "Google Analytics injected successfully"
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 

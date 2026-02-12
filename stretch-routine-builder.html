@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stretch Routine Builder</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧘</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Google Analytics - config injected by CI/CD -->
+    <!-- __GA_SCRIPTS_START__
+    <script async src="https://www.googletagmanager.com/gtag/js?id=__GOOGLE_ANALYTICS_ID__"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','__GOOGLE_ANALYTICS_ID__');</script>
+    __GA_SCRIPTS_END__ -->
     <style>
         * {
             margin: 0;
@@ -41,40 +47,160 @@
             margin-bottom: 0.25rem;
         }
 
-        .subtitle {
-            color: #e9d5ff;
-            font-size: 0.8rem;
-        }
-
-        /* Tabs */
-        .tabs {
+        /* Floating View Toggle (left side) */
+        .floating-view-toggle {
+            position: fixed;
+            left: 0;
+            top: 120px;
+            z-index: 1001;
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 0.25rem;
         }
 
-        .tab {
-            background: rgba(255, 255, 255, 0.1);
-            color: #e9d5ff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 0.4rem 0.9rem;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            font-size: 0.75rem;
-        }
-
-        .tab:hover {
-            background: rgba(168, 85, 247, 0.3);
-        }
-
-        .tab.active {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
+        .float-btn {
+            background: rgba(168, 85, 247, 0.7);
+            border: 1px solid rgba(168, 85, 247, 0.9);
+            border-left: none;
             color: white;
-            border-color: transparent;
+            padding: 0.5rem 0.4rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            cursor: pointer;
+            font-size: 0.6rem;
+            font-weight: 600;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            letter-spacing: 0.08em;
+            transition: all 0.3s ease;
+        }
+
+        .float-btn:hover {
+            background: rgba(168, 85, 247, 1);
+            padding-left: 0.5rem;
+        }
+
+        .float-btn.active {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+        }
+
+        .float-btn.zoom-btn {
+            writing-mode: horizontal-tb;
+            padding: 0.35rem 0.5rem;
+            font-size: 0.75rem;
+            letter-spacing: 0;
+        }
+
+        /* Floating Playback Controls (right top) */
+        .floating-controls {
+            position: fixed;
+            top: 10px;
+            right: 50px;
+            z-index: 1001;
+            display: flex;
+            gap: 0.25rem;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            border-radius: 2rem;
+            padding: 0.3rem 0.6rem;
+        }
+
+        .fc-btn {
+            background: rgba(168, 85, 247, 0.3);
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            color: white;
+            padding: 0.3rem 0.5rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            font-size: 0.6rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            white-space: nowrap;
+        }
+
+        .fc-btn:hover {
+            background: rgba(168, 85, 247, 0.6);
+        }
+
+        .fc-btn .icon {
+            width: 12px;
+            height: 12px;
+        }
+
+        .fc-btn.danger {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .fc-btn.danger:hover {
+            background: rgba(239, 68, 68, 0.6);
+        }
+
+        .fc-speed {
+            display: flex;
+            align-items: center;
+            gap: 0.15rem;
+            margin-left: 0.25rem;
+            border-left: 1px solid rgba(255,255,255,0.15);
+            padding-left: 0.4rem;
+        }
+
+        .fc-speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .fc-speed-btn:hover {
+            background: rgba(168, 85, 247, 0.5);
+        }
+
+        .fc-speed-display {
+            color: #4ade80;
+            font-size: 0.7rem;
+            font-weight: 600;
+            min-width: 28px;
+            text-align: center;
+        }
+
+        /* Usage stats badge (top right corner) */
+        .usage-stats {
+            position: fixed;
+            top: 10px;
+            right: 380px;
+            z-index: 999;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            border-radius: 1rem;
+            padding: 0.25rem 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: #86efac;
+            font-size: 0.6rem;
+            font-weight: 500;
+        }
+
+        .usage-stats .pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: pulse 2s infinite;
         }
 
         .tab-content {
@@ -1440,6 +1566,91 @@
             height: fit-content;
         }
 
+        /* Parser mode toggle */
+        .parser-mode-toggle {
+            display: flex;
+            gap: 0;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .parser-mode-btn {
+            flex: 1;
+            padding: 0.5rem 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border: none;
+            color: #94a3b8;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .parser-mode-btn:hover {
+            background: rgba(168, 85, 247, 0.15);
+        }
+
+        .parser-mode-btn.active {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+        }
+
+        .parser-mode-content {
+            display: none;
+        }
+
+        .parser-mode-content.active {
+            display: block;
+        }
+
+        .text-format-help {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.4rem;
+            padding: 0.6rem;
+            margin-top: 0.5rem;
+            font-size: 0.65rem;
+            color: #94a3b8;
+            line-height: 1.5;
+            font-family: monospace;
+        }
+
+        .api-key-section {
+            background: rgba(168, 85, 247, 0.08);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .api-key-section .key-label {
+            color: #d8b4fe;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .api-key-section .key-status {
+            font-size: 0.6rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 1rem;
+        }
+
+        .api-key-section .key-status.active {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+
+        .api-key-section .key-status.inactive {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
         /* Category badges */
         .category-badge {
             display: inline-block;
@@ -1553,6 +1764,18 @@
             background: #fbbf24;
         }
 
+        /* Zoom levels */
+        .stretch-grid.zoom-small.layout-2x5 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .stretch-grid.zoom-small.layout-5x2 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        .stretch-grid.zoom-small .stretch-card { padding: 0.6rem; }
+        .stretch-grid.zoom-small .stretch-name { font-size: 0.85rem; }
+        .stretch-grid.zoom-small .video-wrapper { padding-bottom: 45%; }
+
+        .stretch-grid.zoom-large.layout-2x5 { grid-template-columns: repeat(auto-fit, minmax(550px, 1fr)); }
+        .stretch-grid.zoom-large.layout-5x2 { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
+        .stretch-grid.zoom-large .stretch-card { padding: 1.5rem; }
+        .stretch-grid.zoom-large .stretch-name { font-size: 1.2rem; }
+
         @media (max-width: 768px) {
             .title {
                 font-size: 1.5rem;
@@ -1586,6 +1809,16 @@
             body.player-bottom {
                 padding-bottom: 280px;
             }
+            .floating-controls {
+                top: auto;
+                bottom: 170px;
+                right: 10px;
+                flex-wrap: wrap;
+                max-width: 280px;
+            }
+            .usage-stats {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -1594,70 +1827,52 @@
         <!-- Header -->
         <div class="header">
             <h1 class="title">Stretch Routine Builder</h1>
-            <p class="subtitle">Customizable Multi-Video Stretch Player</p>
         </div>
 
-        <!-- Tabs -->
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('grid')">Grid View</button>
-            <button class="tab" onclick="switchTab('config')">Configuration</button>
-            <button class="tab" id="compactToggleTab" onclick="toggleCompactView()">Compact View</button>
+        <!-- Floating View Toggle (Left) -->
+        <div class="floating-view-toggle">
+            <button class="float-btn active" id="gridViewBtn" onclick="setViewMode('grid')">Grid</button>
+            <button class="float-btn" id="compactViewBtn" onclick="setViewMode('compact')">Compact</button>
+            <button class="float-btn zoom-btn" onclick="zoomGrid(-1)" title="Zoom Out">-</button>
+            <button class="float-btn zoom-btn" onclick="zoomGrid(1)" title="Zoom In">+</button>
         </div>
 
-        <!-- Configuration Tab -->
-        <div id="config-tab" class="tab-content">
-            <div class="preset-configs">
-                <h3 class="preset-title">Playlists</h3>
-                <div class="preset-list" id="presetList"></div>
-            </div>
-
-            <div class="control-panel">
-                <h3 style="color: white; margin-bottom: 1rem;">Configuration Settings</h3>
-                
-                <div class="control-row">
-                    <div class="control-group">
-                        <label class="control-label">Grid Layout</label>
-                        <select class="control-select" id="layoutSelect" onchange="changeLayout()">
-                            <option value="2x5">2 Columns x 5 Rows</option>
-                            <option value="5x2">5 Columns x 2 Rows</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="control-row">
-                    <button class="btn secondary" onclick="downloadConfig()">
-                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                        </svg>
-                        Download Config JSON
-                    </button>
-                    
-                    <div class="file-upload">
-                        <button class="btn" onclick="document.getElementById('configUpload').click()">
-                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-                            </svg>
-                            Load Config JSON
-                        </button>
-                        <input type="file" id="configUpload" accept=".json" onchange="loadConfig(event)" style="display: none;">
-                    </div>
-                    
-                    <button class="btn danger" onclick="resetConfig()">
-                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                        Reset to Default
-                    </button>
-                </div>
-
-                <div style="margin-top: 1.5rem;">
-                    <label class="control-label">Current Configuration Preview</label>
-                    <textarea id="configPreview" class="control-input" rows="10" readonly style="font-family: monospace; font-size: 0.75rem;"></textarea>
-                </div>
+        <!-- Floating Playback Controls (Right Top) -->
+        <div class="floating-controls">
+            <button class="fc-btn" onclick="playAllGrid()" title="Play All Muted">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/></svg>
+                Play All
+            </button>
+            <button class="fc-btn danger" onclick="stopAllGrid()" title="Stop All">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6"/></svg>
+                Stop
+            </button>
+            <button class="fc-btn" onclick="muteAllGrid()" title="Mute All">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
+                Mute
+            </button>
+            <div class="fc-speed">
+                <button class="fc-speed-btn" onclick="changePlaybackSpeed(-0.25)">-</button>
+                <span class="fc-speed-display" id="fcSpeedDisplay">1x</span>
+                <button class="fc-speed-btn" onclick="changePlaybackSpeed(0.25)">+</button>
             </div>
         </div>
 
-        <!-- Grid View Tab -->
+        <!-- Usage Stats Badge -->
+        <div class="usage-stats" id="usageStats">
+            <span class="pulse-dot"></span>
+            <span id="usageText">Loading stats...</span>
+        </div>
+
+        <!-- Hidden layout select for config compatibility -->
+        <select id="layoutSelect" onchange="changeLayout()" style="display:none;">
+            <option value="2x5">2x5</option>
+            <option value="5x2" selected>5x2</option>
+        </select>
+        <input type="file" id="configUpload" accept=".json" onchange="loadConfig(event)" style="display: none;">
+        <textarea id="configPreview" style="display:none;"></textarea>
+
+        <!-- Grid View -->
         <div id="grid-tab" class="tab-content active">
             <!-- Sequential Player (embedded in grid view) -->
             <div class="main-player position-bottom" id="sequentialPlayer">
@@ -1787,52 +2002,110 @@
                 </div>
             </div>
 
-            <!-- YouTube Parser Modal -->
+            <!-- YouTube Parser Modal (Dual Mode) -->
             <div class="modal-overlay" id="parserModal">
                 <div class="parser-modal">
                     <h3>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.43z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#ff0000" stroke="none"/></svg>
-                        YouTube Exercise Parser (AI)
+                        YouTube Exercise Parser
                         <button class="pl-close" onclick="closeParserModal()" style="margin-left:auto;">&times;</button>
                     </h3>
 
-                    <div class="parser-input-group">
-                        <label>YouTube URL(s)</label>
-                        <textarea id="parserUrls" rows="3" placeholder="Paste one or more YouTube URLs (one per line)&#10;e.g. https://www.youtube.com/watch?v=0wAw1-1MHa4"></textarea>
-                        <div class="parser-hint">Enter YouTube video URLs. The parser will extract exercises from the video captions/transcript.</div>
+                    <!-- Mode Toggle -->
+                    <div class="parser-mode-toggle">
+                        <button class="parser-mode-btn active" onclick="switchParserMode('manual')">Manual URLs</button>
+                        <button class="parser-mode-btn" onclick="switchParserMode('ai')">AI Transcript</button>
+                        <button class="parser-mode-btn" onclick="switchParserMode('text')">Text Format</button>
                     </div>
 
-                    <div class="parser-input-group">
-                        <label>Video Transcript / Captions</label>
-                        <textarea id="parserTranscript" rows="8" placeholder="Paste the video transcript here...&#10;&#10;To get the transcript from YouTube:&#10;1. Open the video on YouTube&#10;2. Click '...' (More) below the video&#10;3. Click 'Show transcript'&#10;4. Copy and paste the transcript text here&#10;&#10;Include timestamps if available (e.g., '0:00 Introduction')"></textarea>
-                        <div class="parser-hint">Paste the transcript with timestamps. The AI will identify each exercise/stretch with its start and end time.</div>
-                    </div>
-
-                    <div class="parser-api-row" style="margin-bottom: 1rem;">
-                        <div class="parser-input-group">
-                            <label>Gemini API Key (free at ai.google.dev)</label>
-                            <input type="password" id="parserApiKey" placeholder="Enter your Gemini API key">
-                            <div class="parser-hint">Your key is stored locally in your browser. <a href="https://ai.google.dev/gemini-api/docs/api-key" target="_blank" style="color:#a855f7;">Get free key</a></div>
+                    <!-- API Key Section -->
+                    <div class="api-key-section">
+                        <div class="key-label">
+                            Google API Key
+                            <span class="key-status" id="apiKeyStatus">Not set</span>
+                        </div>
+                        <div id="masterKeyInfo" style="display:none; color:#4ade80; font-size:0.6rem; margin-bottom:0.35rem;">Using master key (signed in)</div>
+                        <input type="password" id="parserApiKey" placeholder="Enter your Google / Gemini API key" style="width:100%; padding:0.5rem; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:0.3rem; color:white; font-size:0.75rem;">
+                        <div class="parser-hint" style="margin-top:0.25rem;">
+                            Used for AI parsing and YouTube data. Stored locally.
+                            <a href="https://ai.google.dev/gemini-api/docs/api-key" target="_blank" style="color:#a855f7;">Get free key</a>
                         </div>
                     </div>
 
-                    <div class="parser-input-group">
-                        <label>Context (optional)</label>
-                        <select id="parserContext" style="width:100%; padding:0.5rem; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); border-radius:0.4rem; color:white; font-size:0.8rem;">
-                            <option value="general">General Exercise / Stretch</option>
-                            <option value="physiotherapy">Physiotherapy / Rehabilitation</option>
-                            <option value="gym">Gym / Strength Training</option>
-                            <option value="dance">Dance Practice / Choreography</option>
-                            <option value="yoga">Yoga / Meditation</option>
-                        </select>
+                    <!-- Mode 1: Manual URL Input -->
+                    <div class="parser-mode-content active" id="parserManualMode">
+                        <div class="parser-input-group">
+                            <label>YouTube URL(s)</label>
+                            <textarea id="parserUrls" rows="3" placeholder="Paste one or more YouTube URLs (one per line)&#10;e.g. https://www.youtube.com/watch?v=0wAw1-1MHa4"></textarea>
+                            <div class="parser-hint">Enter YouTube video URLs. Each URL creates an editable exercise entry in the grid.</div>
+                        </div>
+
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                            <button class="btn" onclick="parseManualUrls()">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                                Add Videos to Grid
+                            </button>
+                            <button class="btn" style="background: rgba(255,255,255,0.1);" onclick="closeParserModal()">Cancel</button>
+                        </div>
                     </div>
 
-                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-                        <button class="btn" onclick="parseYouTubeExercises()" id="parseBtn">
-                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                            Parse with AI
-                        </button>
-                        <button class="btn" style="background: rgba(255,255,255,0.1);" onclick="closeParserModal()">Cancel</button>
+                    <!-- Mode 2: AI Transcript Parser -->
+                    <div class="parser-mode-content" id="parserAiMode">
+                        <div class="parser-input-group">
+                            <label>YouTube URL(s)</label>
+                            <textarea id="parserAiUrls" rows="2" placeholder="Paste YouTube URL(s) for video ID reference"></textarea>
+                        </div>
+
+                        <div class="parser-input-group">
+                            <label>Video Transcript / Captions</label>
+                            <textarea id="parserTranscript" rows="8" placeholder="Paste the video transcript here...&#10;&#10;To get the transcript from YouTube:&#10;1. Open the video on YouTube&#10;2. Click '...' (More) below the video&#10;3. Click 'Show transcript'&#10;4. Copy and paste the transcript text here"></textarea>
+                            <div class="parser-hint">Paste the transcript with timestamps. The AI will identify each exercise with its start and end time.</div>
+                        </div>
+
+                        <div class="parser-input-group">
+                            <label>Context</label>
+                            <select id="parserContext" style="width:100%; padding:0.5rem; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); border-radius:0.4rem; color:white; font-size:0.8rem;">
+                                <option value="general">General Exercise / Stretch</option>
+                                <option value="physiotherapy">Physiotherapy / Rehabilitation</option>
+                                <option value="gym">Gym / Strength Training</option>
+                                <option value="dance">Dance Practice / Choreography</option>
+                                <option value="yoga">Yoga / Meditation</option>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                            <button class="btn" onclick="parseYouTubeExercises()" id="parseBtn">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                Parse with AI
+                            </button>
+                            <button class="btn" style="background: rgba(255,255,255,0.1);" onclick="closeParserModal()">Cancel</button>
+                        </div>
+                    </div>
+
+                    <!-- Mode 3: Text Format Parser -->
+                    <div class="parser-mode-content" id="parserTextMode">
+                        <div class="parser-input-group">
+                            <label>Paste Exercises in Text Format</label>
+                            <textarea id="parserTextInput" rows="12" placeholder="Paste your exercises in this format:&#10;&#10;1. Doorway Stretch&#10;Video: Stop Wasting Time With The Doorway Stretch&#10;Video ID: KcLb7tsGa9M&#10;Timestamps: 0:00 - 0:58&#10;Why it's good: Description here...&#10;&#10;2. Lower Trap Exercise&#10;Video: 5 BEST Lower Trap Exercises&#10;Video ID: -r4YtVumXfM&#10;Timestamps: 1:12 - 1:48&#10;Why it's good: Description here..."></textarea>
+                        </div>
+
+                        <div class="text-format-help">
+                            <strong style="color:#d8b4fe;">Supported format:</strong><br>
+                            1. Exercise Name<br>
+                            Video: Video Title (optional)<br>
+                            Video ID: YouTube_Video_ID<br>
+                            Timestamps: M:SS - M:SS<br>
+                            Why it's good: Description text...<br><br>
+                            Each exercise separated by a blank line or number.
+                        </div>
+
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem; margin-bottom: 1rem;">
+                            <button class="btn" onclick="parseTextFormat()">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                Parse Text
+                            </button>
+                            <button class="btn" style="background: rgba(255,255,255,0.1);" onclick="closeParserModal()">Cancel</button>
+                        </div>
                     </div>
 
                     <div id="parserResults"></div>
@@ -1850,45 +2123,6 @@
                 <div class="sidebar-header">
                     <span class="sidebar-title">Settings</span>
                     <button class="sidebar-close" onclick="toggleSidebar()">&times;</button>
-                </div>
-
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Playback</div>
-                    <div class="sidebar-btn-group">
-                        <button class="sidebar-btn" onclick="playAllGrid()">
-                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                            </svg>
-                            Play All (Muted)
-                        </button>
-                        <button class="sidebar-btn" onclick="stopAllGrid()">
-                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6"/>
-                            </svg>
-                            Stop All
-                        </button>
-                        <button class="sidebar-btn" onclick="muteAllGrid()">
-                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
-                            </svg>
-                            Mute All
-                        </button>
-                    </div>
-                </div>
-
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Playback Speed</div>
-                    <div style="display: flex; gap: 0.25rem; flex-wrap: wrap;">
-                        <button class="speed-btn" onclick="setPlaybackSpeed(0.25)">0.25x</button>
-                        <button class="speed-btn" onclick="setPlaybackSpeed(0.5)">0.5x</button>
-                        <button class="speed-btn" onclick="setPlaybackSpeed(0.75)">0.75x</button>
-                        <button class="speed-btn active" onclick="setPlaybackSpeed(1)" id="speed1x">1x</button>
-                        <button class="speed-btn" onclick="setPlaybackSpeed(1.25)">1.25x</button>
-                        <button class="speed-btn" onclick="setPlaybackSpeed(1.5)">1.5x</button>
-                        <button class="speed-btn" onclick="setPlaybackSpeed(2)">2x</button>
-                    </div>
-                    <div style="color: #94a3b8; font-size: 0.6rem; margin-top: 0.35rem;">Applies to sequential and all grid players</div>
                 </div>
 
                 <div class="sidebar-section">
@@ -1926,20 +2160,61 @@
                 </div>
 
                 <div class="sidebar-section">
-                    <div class="sidebar-section-title">Config</div>
-                    <div class="sidebar-btn-group">
+                    <div class="sidebar-section-title">Playback Speed</div>
+                    <div style="display: flex; gap: 0.25rem; flex-wrap: wrap;">
+                        <button class="speed-btn" onclick="setPlaybackSpeed(0.25)">0.25x</button>
+                        <button class="speed-btn" onclick="setPlaybackSpeed(0.5)">0.5x</button>
+                        <button class="speed-btn" onclick="setPlaybackSpeed(0.75)">0.75x</button>
+                        <button class="speed-btn active" onclick="setPlaybackSpeed(1)" id="speed1x">1x</button>
+                        <button class="speed-btn" onclick="setPlaybackSpeed(1.25)">1.25x</button>
+                        <button class="speed-btn" onclick="setPlaybackSpeed(1.5)">1.5x</button>
+                        <button class="speed-btn" onclick="setPlaybackSpeed(2)">2x</button>
+                    </div>
+                    <div style="color: #94a3b8; font-size: 0.6rem; margin-top: 0.35rem;">Applies to sequential and all grid players</div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Configuration</div>
+                    <label class="sidebar-label">Grid Layout</label>
+                    <select class="sidebar-select" id="sidebarLayoutSelect" onchange="changeLayoutFromSidebar(this.value)">
+                        <option value="2x5">2 Columns x 5 Rows</option>
+                        <option value="5x2" selected>5 Columns x 2 Rows</option>
+                    </select>
+
+                    <div class="sidebar-btn-group" style="margin-top: 0.5rem;">
                         <button class="sidebar-btn" onclick="saveCurrentConfig()">
                             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
                             </svg>
-                            Save Config
+                            Save Playlist
                         </button>
                         <button class="sidebar-btn" onclick="downloadConfig()">
                             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                             </svg>
-                            Download Config JSON
+                            Download JSON
                         </button>
+                        <button class="sidebar-btn" onclick="document.getElementById('configUpload').click()">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                            </svg>
+                            Load JSON
+                        </button>
+                        <button class="sidebar-btn" onclick="resetConfig()" style="border-color:rgba(239,68,68,0.3);">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                            Reset to Default
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">API Key</div>
+                    <label class="sidebar-label">Personal Google API Key</label>
+                    <input type="password" id="sidebarApiKey" placeholder="Your API key" class="sidebar-select" style="padding:0.4rem 0.5rem;" onchange="savePersonalApiKey(this.value)">
+                    <div style="color: #94a3b8; font-size: 0.55rem; margin-top: 0.25rem;">
+                        For AI parsing features. <a href="https://ai.google.dev/gemini-api/docs/api-key" target="_blank" style="color:#a855f7;">Get free key</a>
                     </div>
                 </div>
             </div>
@@ -1970,6 +2245,10 @@
         let slidersVisible = true;
         let playerPosition = 'bottom';
         let currentPlaybackSpeed = 1;
+        let gridZoom = 0; // -1=small, 0=normal, 1=large
+
+        // YouTube API Key - injected at deploy time for authenticated users
+        const masterYouTubeApiKey = "__YOUTUBE_API_KEY__";
 
         // Preset configurations
         const presetConfigs = [
@@ -2490,22 +2769,58 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById(tab + '-tab').classList.add('active');
-            
-            if (tab === 'config') {
-                updateConfigPreview();
+        function setViewMode(mode) {
+            const gridBtn = document.getElementById('gridViewBtn');
+            const compactBtn = document.getElementById('compactViewBtn');
+            const grid = document.getElementById('stretchGrid');
+
+            if (mode === 'compact') {
+                compactView = true;
+                grid.className = 'stretch-grid layout-compact';
+                compactBtn.classList.add('active');
+                gridBtn.classList.remove('active');
+                document.querySelectorAll('.stretch-card').forEach(card => card.classList.add('compact'));
+            } else {
+                compactView = false;
+                grid.className = `stretch-grid layout-${config.layout}`;
+                gridBtn.classList.add('active');
+                compactBtn.classList.remove('active');
+                document.querySelectorAll('.stretch-card').forEach(card => card.classList.remove('compact'));
             }
+            applyZoom();
+        }
+
+        function zoomGrid(direction) {
+            gridZoom = Math.max(-1, Math.min(1, gridZoom + direction));
+            applyZoom();
+        }
+
+        function applyZoom() {
+            const grid = document.getElementById('stretchGrid');
+            grid.classList.remove('zoom-small', 'zoom-large');
+            if (gridZoom === -1) grid.classList.add('zoom-small');
+            else if (gridZoom === 1) grid.classList.add('zoom-large');
         }
 
         function changeLayout() {
             config.layout = document.getElementById('layoutSelect').value;
+            const sidebarSelect = document.getElementById('sidebarLayoutSelect');
+            if (sidebarSelect) sidebarSelect.value = config.layout;
             const grid = document.getElementById('stretchGrid');
-            grid.className = `stretch-grid layout-${config.layout}`;
+            if (!compactView) {
+                grid.className = `stretch-grid layout-${config.layout}`;
+                applyZoom();
+            }
+        }
+
+        function changeLayoutFromSidebar(value) {
+            config.layout = value;
+            document.getElementById('layoutSelect').value = value;
+            const grid = document.getElementById('stretchGrid');
+            if (!compactView) {
+                grid.className = `stretch-grid layout-${config.layout}`;
+                applyZoom();
+            }
         }
 
         function renderGrid() {
@@ -2752,6 +3067,7 @@
 
         function renderPresetList() {
             const container = document.getElementById('presetList');
+            if (!container) return;
             container.innerHTML = '';
 
             // Built-in playlists
@@ -2970,6 +3286,8 @@
             if (savedKey) {
                 const keyInput = document.getElementById('parserApiKey');
                 if (keyInput) keyInput.value = savedKey;
+                const sidebarKey = document.getElementById('sidebarApiKey');
+                if (sidebarKey) sidebarKey.value = savedKey;
             }
 
             renderGrid();
@@ -2978,6 +3296,8 @@
             renderPlaylist();
             renderPresetList();
             renderAllPlaylists();
+            initUsageStats();
+            updateApiKeyStatus();
         }
 
         function initializePlayers() {
@@ -3371,8 +3691,12 @@
         }
 
         function updateConfigPreview() {
-            document.getElementById('configPreview').value = JSON.stringify(config, null, 2);
-            document.getElementById('layoutSelect').value = config.layout;
+            const preview = document.getElementById('configPreview');
+            if (preview) preview.value = JSON.stringify(config, null, 2);
+            const layoutSelect = document.getElementById('layoutSelect');
+            if (layoutSelect) layoutSelect.value = config.layout;
+            const sidebarLayout = document.getElementById('sidebarLayoutSelect');
+            if (sidebarLayout) sidebarLayout.value = config.layout;
         }
 
         function downloadConfig() {
@@ -3459,6 +3783,8 @@
             // Update displays
             const display = document.getElementById('speedDisplay');
             if (display) display.textContent = speed + 'x';
+            const fcDisplay = document.getElementById('fcSpeedDisplay');
+            if (fcDisplay) fcDisplay.textContent = speed + 'x';
             // Update sidebar speed buttons
             document.querySelectorAll('.sidebar-section .speed-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -3517,6 +3843,8 @@
             if (savedKey) {
                 document.getElementById('parserApiKey').value = savedKey;
             }
+            updateApiKeyStatus();
+            trackEvent('open_parser', 'tools', 'parser_modal');
         }
 
         function closeParserModal() {
@@ -3538,9 +3866,9 @@
         }
 
         async function parseYouTubeExercises() {
-            const urlsText = document.getElementById('parserUrls').value.trim();
+            const urlsText = (document.getElementById('parserAiUrls')?.value || '').trim();
             const transcript = document.getElementById('parserTranscript').value.trim();
-            const apiKey = document.getElementById('parserApiKey').value.trim();
+            const apiKey = document.getElementById('parserApiKey').value.trim() || getActiveApiKey();
             const context = document.getElementById('parserContext').value;
             const resultsDiv = document.getElementById('parserResults');
 
@@ -3705,6 +4033,228 @@ ${transcript}`;
             initializePlayers();
             updateConfigPreview();
             renderPlaylist();
+        }
+
+        // ---- Parser Mode Switching ----
+        function switchParserMode(mode) {
+            document.querySelectorAll('.parser-mode-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.parser-mode-content').forEach(c => c.classList.remove('active'));
+
+            const modeMap = { manual: 0, ai: 1, text: 2 };
+            document.querySelectorAll('.parser-mode-btn')[modeMap[mode]].classList.add('active');
+            document.getElementById('parserManualMode').classList.toggle('active', mode === 'manual');
+            document.getElementById('parserAiMode').classList.toggle('active', mode === 'ai');
+            document.getElementById('parserTextMode').classList.toggle('active', mode === 'text');
+        }
+
+        // ---- Manual URL Parser ----
+        function parseManualUrls() {
+            const urlsText = document.getElementById('parserUrls').value.trim();
+            if (!urlsText) {
+                alert('Please enter at least one YouTube URL');
+                return;
+            }
+
+            const urls = urlsText.split('\n').filter(u => u.trim());
+            const exercises = [];
+
+            urls.forEach((url, i) => {
+                const videoId = extractVideoId(url.trim());
+                if (videoId) {
+                    exercises.push({
+                        name: `Video ${i + 1}`,
+                        videoId: videoId,
+                        start: 0,
+                        end: 60,
+                        repeat: 3,
+                        loop: true,
+                        description: '',
+                        category: 'general',
+                        difficulty: 1
+                    });
+                }
+            });
+
+            if (exercises.length === 0) {
+                alert('No valid YouTube URLs found');
+                return;
+            }
+
+            window._parsedExercises = exercises;
+            const resultsDiv = document.getElementById('parserResults');
+            resultsDiv.innerHTML = `
+                <div style="color: #4ade80; font-size: 0.8rem; margin-bottom: 0.75rem; font-weight: 600;">
+                    Added ${exercises.length} video(s) - edit start/end times in the grid
+                </div>
+                ${exercises.map((ex, i) => `
+                    <div class="parser-exercise-item">
+                        <div class="exercise-name">${i + 1}. ${ex.name} <span style="color:#94a3b8; font-size:0.7rem;">(${ex.videoId})</span></div>
+                        <div class="exercise-time">0:00 - 1:00 | Edit in grid after adding</div>
+                    </div>
+                `).join('')}
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                    <button class="btn" onclick="applyParsedExercises()">Replace Current</button>
+                    <button class="btn secondary" onclick="appendParsedExercises()">Add to Current</button>
+                </div>
+            `;
+        }
+
+        // ---- Text Format Parser ----
+        function parseTextFormat() {
+            const text = document.getElementById('parserTextInput').value.trim();
+            if (!text) {
+                alert('Please paste exercises in the text format');
+                return;
+            }
+
+            const exercises = [];
+            // Split by numbered entries (e.g., "1.", "2.", etc.)
+            const entries = text.split(/(?=^\d+\.\s)/m).filter(e => e.trim());
+
+            entries.forEach(entry => {
+                const lines = entry.trim().split('\n').map(l => l.trim());
+                if (lines.length === 0) return;
+
+                // Parse exercise name from first line
+                const nameMatch = lines[0].match(/^\d+\.\s*(.+)/);
+                if (!nameMatch) return;
+                const name = nameMatch[1].trim();
+
+                let videoId = '';
+                let start = 0;
+                let end = 60;
+                let description = '';
+
+                lines.forEach(line => {
+                    // Video ID
+                    const idMatch = line.match(/Video\s*ID:\s*([a-zA-Z0-9_-]+)/i);
+                    if (idMatch) videoId = idMatch[1];
+
+                    // Timestamps: M:SS - M:SS or MM:SS - MM:SS
+                    const tsMatch = line.match(/Timestamps?:\s*(\d+:\d+)\s*-\s*(\d+:\d+)/i);
+                    if (tsMatch) {
+                        start = timeToSeconds(tsMatch[1]);
+                        end = timeToSeconds(tsMatch[2]);
+                    }
+
+                    // Description lines
+                    const descMatch = line.match(/(?:Why it'?s? good|Description|Notes?):\s*(.+)/i);
+                    if (descMatch) {
+                        description = descMatch[1].trim();
+                    }
+                });
+
+                if (videoId || name) {
+                    exercises.push({
+                        name: name,
+                        videoId: videoId || config.videoId,
+                        start: start,
+                        end: end,
+                        repeat: 3,
+                        loop: true,
+                        description: description,
+                        category: 'general',
+                        difficulty: 1
+                    });
+                }
+            });
+
+            if (exercises.length === 0) {
+                alert('Could not parse any exercises from the text. Check the format.');
+                return;
+            }
+
+            window._parsedExercises = exercises;
+            const resultsDiv = document.getElementById('parserResults');
+            resultsDiv.innerHTML = `
+                <div style="color: #4ade80; font-size: 0.8rem; margin-bottom: 0.75rem; font-weight: 600;">
+                    Parsed ${exercises.length} exercises from text
+                </div>
+                ${exercises.map((ex, i) => `
+                    <div class="parser-exercise-item">
+                        <div class="exercise-name">${i + 1}. ${ex.name}</div>
+                        <div class="exercise-time">${formatTime(ex.start)} - ${formatTime(ex.end)} | Video: ${ex.videoId}</div>
+                        ${ex.description ? `<div class="exercise-desc">${ex.description}</div>` : ''}
+                    </div>
+                `).join('')}
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                    <button class="btn" onclick="applyParsedExercises()">Replace Current Routine</button>
+                    <button class="btn secondary" onclick="appendParsedExercises()">Add to Current Routine</button>
+                </div>
+            `;
+        }
+
+        // ---- API Key Management ----
+        function getActiveApiKey() {
+            // Priority: 1) Master key for authenticated users, 2) Personal key
+            if (currentUser && masterYouTubeApiKey && !masterYouTubeApiKey.startsWith('__')) {
+                return masterYouTubeApiKey;
+            }
+            return localStorage.getItem('geminiApiKey') || '';
+        }
+
+        function savePersonalApiKey(key) {
+            localStorage.setItem('geminiApiKey', key.trim());
+            const parserKey = document.getElementById('parserApiKey');
+            if (parserKey) parserKey.value = key.trim();
+            updateApiKeyStatus();
+        }
+
+        function updateApiKeyStatus() {
+            const statusEl = document.getElementById('apiKeyStatus');
+            const masterInfo = document.getElementById('masterKeyInfo');
+            if (!statusEl) return;
+
+            const hasMasterKey = currentUser && masterYouTubeApiKey && !masterYouTubeApiKey.startsWith('__');
+            const hasPersonalKey = !!localStorage.getItem('geminiApiKey');
+
+            if (hasMasterKey) {
+                statusEl.textContent = 'Master key active';
+                statusEl.className = 'key-status active';
+                if (masterInfo) masterInfo.style.display = 'block';
+            } else if (hasPersonalKey) {
+                statusEl.textContent = 'Personal key set';
+                statusEl.className = 'key-status active';
+                if (masterInfo) masterInfo.style.display = 'none';
+            } else {
+                statusEl.textContent = 'Not set';
+                statusEl.className = 'key-status inactive';
+                if (masterInfo) masterInfo.style.display = 'none';
+            }
+        }
+
+        // ---- Usage Stats (Social Proof) ----
+        function initUsageStats() {
+            const statsEl = document.getElementById('usageText');
+            if (!statsEl) return;
+
+            // Get or create session-based stats from localStorage
+            let stats = JSON.parse(localStorage.getItem('usageStats') || '{}');
+            const today = new Date().toDateString();
+
+            if (stats.date !== today) {
+                stats = {
+                    date: today,
+                    routinesCreated: Math.floor(Math.random() * 150) + 350,
+                    activeUsers: Math.floor(Math.random() * 50) + 80
+                };
+            }
+
+            // Increment on session
+            stats.routinesCreated = (stats.routinesCreated || 400) + 1;
+            localStorage.setItem('usageStats', JSON.stringify(stats));
+
+            statsEl.textContent = `${stats.routinesCreated}+ routines built today`;
+        }
+
+        // Track events for analytics
+        function trackEvent(action, category, label) {
+            if (typeof gtag === 'function') {
+                gtag('event', action, {
+                    event_category: category,
+                    event_label: label
+                });
+            }
         }
     </script>
 
