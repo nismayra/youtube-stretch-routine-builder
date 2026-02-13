@@ -62,6 +62,14 @@ jobs:
           sed -i 's|__GA_SCRIPTS_END__ -->|<!-- /ga enabled -->|g' stretch-routine-builder.html
           echo "Google Analytics injected successfully"
 
+      # Enable Auto Bug Detection & Feedback Widget (if configured)
+      - name: Enable Auto Bug Fixer
+        if: ${{ vars.AUTOBUG_ENABLED == 'true' }}
+        run: |
+          sed -i 's|<!-- __AUTOBUG_SCRIPTS_START__|<!-- autobug enabled -->|g' stretch-routine-builder.html
+          sed -i 's|__AUTOBUG_SCRIPTS_END__ -->|<!-- /autobug enabled -->|g' stretch-routine-builder.html
+          echo "Auto Bug Detection & Feedback Widget enabled"
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
