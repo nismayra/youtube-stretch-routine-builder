@@ -70,13 +70,25 @@ jobs:
           sed -i 's|__AUTOBUG_SCRIPTS_END__ -->|<!-- /autobug enabled -->|g' stretch-routine-builder.html
           echo "Auto Bug Detection & Feedback Widget enabled"
 
+      # Prepare deployment directory (exclude non-deployable files)
+      - name: Prepare site
+        run: |
+          mkdir -p _site/scripts
+          cp stretch-routine-builder.html _site/
+          cp index.html _site/
+          cp -f *.json _site/ 2>/dev/null || true
+          # Copy frontend scripts if they exist
+          [ -f scripts/error-logger.js ] && cp scripts/error-logger.js _site/scripts/
+          [ -f scripts/feedback-widget.js ] && cp scripts/feedback-widget.js _site/scripts/
+          echo "Site prepared for deployment"
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: '.'
+          path: '_site'
 
   deploy:
     needs: build
