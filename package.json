@@ -1,0 +1,20 @@
+{
+  "name": "youtube-stretch-routine-builder",
+  "version": "2.0.0",
+  "description": "YouTube Stretch Routine Builder with AI-powered auto bug detection, feedback system, and Slack integration",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "analyze": "node scripts/bug-analyzer.js"
+  },
+  "keywords": [
+    "youtube",
+    "stretch",
+    "routine",
+    "exercise",
+    "ai",
+    "bug-detection",
+    "feedback"
+  ],
+  "license": "MIT"
+}
